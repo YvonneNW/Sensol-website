@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sensol — SEND Documentation & Outcomes Platform</title>
+<meta name="description" content="Sensol builds the first platform connecting SEND provision to measured child outcomes. AI-powered EHCP and ISP documentation for local authorities and schools.">
+<meta name="keywords" content="SEND, EHCP, Education Health Care Plan, ISP, Individual Support Plan, AI, outcomes tracking, local authority, special educational needs">
+<meta name="author" content="Sensol Limited">
+<meta property="og:title" content="Sensol — Evidence-Based SEND Documentation">
+<meta property="og:description" content="The first platform that measures whether SEND provision actually improves children's lives.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sensol.co.uk">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy-950: #0a0f1e;
+  --navy-900: #0d1528;
+  --navy-800: #142038;
+  --navy-700: #1b2a4a;
+  --navy-600: #243a63;
+  --navy-500: #2e4f82;
+  --accent: #3b82f6;
+  --accent-light: #60a5fa;
+  --accent-glow: rgba(59, 130, 246, 0.15);
+  --teal: #14b8a6;
+  --teal-light: #2dd4bf;
+  --warm: #f59e0b;
+  --white: #ffffff;
+  --grey-50: #f8fafc;
+  --grey-100: #f1f5f9;
+  --grey-200: #e2e8f0;
+  --grey-300: #cbd5e1;
+  --grey-400: #94a3b8;
+  --grey-500: #64748b;
+  --grey-600: #475569;
+  --grey-700: #334155;
+  --grey-800: #1e293b;
+  --font-display: 'Sora', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --transition: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-body); color: var(--grey-700); background: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+/* ═══ NAVIGATION ═══ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 1rem 2rem;
+  transition: all 0.4s var(--transition);
+  background: transparent;
+}
+nav.scrolled {
+  background: rgba(10, 15, 30, 0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+  padding: 0.75rem 2rem;
+}
+.nav-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+.nav-logo svg { width: 36px; height: 36px; }
+.nav-logo span {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.25rem;
+  color: var(--white); letter-spacing: 0.05em;
+}
+.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+.nav-links a {
+  text-decoration: none; color: rgba(255,255,255,0.7);
+  font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em;
+  transition: color 0.3s ease; position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+  background: var(--accent); transition: width 0.3s var(--transition);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+  background: var(--accent); color: var(--white); padding: 0.6rem 1.5rem;
+  border-radius: 8px; font-weight: 600; font-size: 0.85rem;
+  text-decoration: none; transition: all 0.3s ease; border: none; cursor: pointer;
+}
+.nav-cta:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(59,130,246,0.3); }
+.mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+.mobile-toggle span { display: block; width: 24px; height: 2px; background: var(--white); margin: 6px 0; transition: all 0.3s ease; }
+
+/* ═══ HERO ═══ */
+.hero {
+  min-height: 100vh; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 40%, var(--navy-800) 100%);
+  display: flex; align-items: center; padding: 8rem 2rem 6rem;
+}
+.hero-grid {
+  position: absolute; inset: 0; opacity: 0.06;
+  background-image: 
+    linear-gradient(rgba(59,130,246,0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+@keyframes gridPulse { 0%, 100% { opacity: 0.04; } 50% { opacity: 0.08; } }
+.hero-orb {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none;
+}
+.hero-orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -100px; animation: orbFloat 12s ease-in-out infinite; }
+.hero-orb-2 { width: 400px; height: 400px; background: var(--teal); bottom: -100px; left: -50px; animation: orbFloat 15s ease-in-out infinite reverse; }
+@keyframes orbFloat { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -40px); } }
+
+.hero-content { max-width: 1280px; margin: 0 auto; position: relative; z-index: 2; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25);
+  padding: 0.5rem 1rem; border-radius: 100px; margin-bottom: 2rem;
+  font-size: 0.8rem; color: var(--accent-light); font-weight: 500; letter-spacing: 0.03em;
+  animation: fadeInUp 0.8s var(--transition) both;
+}
+.hero-badge .dot { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.hero h1 {
+  font-family: var(--font-display); font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 1.5rem;
+  max-width: 800px; letter-spacing: -0.02em;
+  animation: fadeInUp 0.8s var(--transition) 0.1s both;
+}
+.hero h1 .highlight {
+  background: linear-gradient(135deg, var(--accent-light), var(--teal-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: clamp(1rem, 1.8vw, 1.25rem); color: var(--grey-400);
+  max-width: 600px; line-height: 1.7; margin-bottom: 2.5rem;
+  animation: fadeInUp 0.8s var(--transition) 0.2s both;
+}
+.hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  animation: fadeInUp 0.8s var(--transition) 0.3s both;
+}
+.btn-primary {
+  background: var(--accent); color: var(--white); padding: 0.9rem 2rem;
+  border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+  text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem;
+  border: none; cursor: pointer; font-family: var(--font-body);
+}
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.3); }
+.btn-secondary {
+  background: transparent; color: var(--white); padding: 0.9rem 2rem;
+  border-radius: 10px; font-weight: 500; font-size: 0.95rem;
+  text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-family: var(--font-body);
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(59,130,246,0.05); }
+
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+  margin-top: 4rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.06);
+  animation: fadeInUp 0.8s var(--transition) 0.4s both;
+}
+.hero-stat h3 {
+  font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700; color: var(--white); margin-bottom: 0.25rem;
+}
+.hero-stat h3 .num-accent { color: var(--accent-light); }
+.hero-stat p { color: var(--grey-400); font-size: 0.85rem; line-height: 1.5; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══ SECTIONS (LIGHT) ═══ */
+section { padding: 6rem 2rem; }
+.section-light { background: var(--white); }
+.section-grey { background: var(--grey-50); }
+.section-dark { background: var(--navy-950); color: var(--white); }
+.container { max-width: 1280px; margin: 0 auto; }
+
+.section-header { text-align: center; margin-bottom: 4rem; }
+.section-label {
+  font-family: var(--font-display); font-size: 0.75rem; font-weight: 600;
+  color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem;
+}
+.section-dark .section-label { color: var(--accent-light); }
+.section-header h2 {
+  font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700; color: var(--navy-900); line-height: 1.2; margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.section-dark .section-header h2 { color: var(--white); }
+.section-header p { color: var(--grey-500); font-size: 1.1rem; max-width: 640px; margin: 0 auto; line-height: 1.7; }
+.section-dark .section-header p { color: var(--grey-400); }
+
+/* ═══ PROBLEM / CRISIS STATS ═══ */
+.crisis-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
+}
+.crisis-card {
+  background: var(--white); border: 1px solid var(--grey-200); border-radius: 16px;
+  padding: 2rem; transition: all 0.4s var(--transition); position: relative; overflow: hidden;
+}
+.crisis-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--teal));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--transition);
+}
+.crisis-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); border-color: transparent; }
+.crisis-card:hover::before { transform: scaleX(1); }
+.crisis-number {
+  font-family: var(--font-display); font-size: 2.5rem; font-weight: 700;
+  color: var(--navy-900); margin-bottom: 0.5rem; line-height: 1;
+}
+.crisis-number.red { color: #ef4444; }
+.crisis-number.amber { color: var(--warm); }
+.crisis-number.blue { color: var(--accent); }
+.crisis-card h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; color: var(--navy-700); margin-bottom: 0.5rem; }
+.crisis-card p { font-size: 0.85rem; color: var(--grey-500); line-height: 1.6; }
+.crisis-source { font-size: 0.7rem; color: var(--grey-400); margin-top: 0.75rem; font-style: italic; }
+
+/* ═══ PRODUCT / HOW IT WORKS ═══ */
+.product-flow {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+}
+.product-visual {
+  background: linear-gradient(135deg, var(--navy-900), var(--navy-800));
+  border-radius: 20px; padding: 3rem; position: relative; overflow: hidden;
+  min-height: 400px; display: flex; flex-direction: column; justify-content: center;
+}
+.product-visual::before {
+  content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at 30% 40%, rgba(59,130,246,0.08), transparent 60%);
+}
+.flow-step {
+  display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem;
+  padding: 1rem; border-radius: 12px; transition: all 0.3s ease; position: relative; z-index: 1;
+}
+.flow-step:hover { background: rgba(255,255,255,0.04); }
+.flow-num {
+  width: 32px; height: 32px; border-radius: 8px; background: rgba(59,130,246,0.2);
+  color: var(--accent-light); display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+}
+.flow-step h4 { color: var(--white); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+.flow-step p { color: var(--grey-400); font-size: 0.82rem; line-height: 1.5; }
+
+.product-text h3 {
+  font-family: var(--font-display); font-size: 1.8rem; font-weight: 700;
+  color: var(--navy-900); margin-bottom: 1rem; line-height: 1.2;
+}
+.product-text p { color: var(--grey-600); line-height: 1.8; margin-bottom: 1.5rem; font-size: 1rem; }
+.feature-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+.feature-tag {
+  background: var(--accent-glow); color: var(--accent); padding: 0.4rem 1rem;
+  border-radius: 100px; font-size: 0.78rem; font-weight: 600; border: 1px solid rgba(59,130,246,0.15);
+}
+
+/* ═══ DIFFERENTIATORS ═══ */
+.diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.diff-card {
+  padding: 2.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02); transition: all 0.4s var(--transition);
+}
+.diff-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(59,130,246,0.2); transform: translateY(-4px); }
+.diff-icon {
+  width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.5rem; font-size: 1.5rem;
+}
+.diff-icon.blue { background: rgba(59,130,246,0.15); }
+.diff-icon.teal { background: rgba(20,184,166,0.15); }
+.diff-icon.amber { background: rgba(245,158,11,0.15); }
+.diff-card h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--white); margin-bottom: 0.75rem; }
+.diff-card p { color: var(--grey-400); font-size: 0.9rem; line-height: 1.7; }
+
+/* ═══ TEAM ═══ */
+.team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.team-card {
+  background: var(--white); border: 1px solid var(--grey-200); border-radius: 16px;
+  padding: 2.5rem; text-align: center; transition: all 0.4s var(--transition);
+}
+.team-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+.team-avatar {
+  width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--white);
+}
+.team-avatar.yvonne { background: linear-gradient(135deg, var(--accent), #6366f1); }
+.team-avatar.caylem { background: linear-gradient(135deg, var(--teal), #059669); }
+.team-avatar.daniel { background: linear-gradient(135deg, var(--warm), #ea580c); }
+.team-card h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--navy-900); margin-bottom: 0.25rem; }
+.team-role { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; }
+.team-card p { color: var(--grey-500); font-size: 0.85rem; line-height: 1.6; }
+
+/* ═══ BLOG ═══ */
+.blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; }
+.blog-card {
+  background: var(--white); border: 1px solid var(--grey-200); border-radius: 16px;
+  overflow: hidden; transition: all 0.4s var(--transition);
+}
+.blog-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+.blog-img {
+  height: 200px; position: relative; overflow: hidden;
+}
+.blog-img-1 { background: linear-gradient(135deg, var(--navy-900), var(--accent)); }
+.blog-img-2 { background: linear-gradient(135deg, #059669, var(--teal)); }
+.blog-img-3 { background: linear-gradient(135deg, var(--warm), #ea580c); }
+.blog-img .blog-overlay {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; opacity: 0.3;
+}
+.blog-body { padding: 1.5rem 2rem 2rem; }
+.blog-meta { display: flex; gap: 1rem; margin-bottom: 0.75rem; }
+.blog-tag {
+  font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--accent); background: var(--accent-glow); padding: 0.25rem 0.6rem; border-radius: 4px;
+}
+.blog-date { font-size: 0.78rem; color: var(--grey-400); }
+.blog-card h3 {
+  font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
+  color: var(--navy-900); margin-bottom: 0.5rem; line-height: 1.4;
+}
+.blog-card p { color: var(--grey-500); font-size: 0.85rem; line-height: 1.6; }
+.blog-link {
+  display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 1rem;
+  color: var(--accent); font-size: 0.85rem; font-weight: 600; text-decoration: none;
+  transition: gap 0.3s ease;
+}
+.blog-link:hover { gap: 0.6rem; }
+
+/* ═══ CONTACT ═══ */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+.contact-info h3 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--navy-900); margin-bottom: 1rem; }
+.contact-info p { color: var(--grey-600); line-height: 1.8; margin-bottom: 2rem; }
+.contact-detail { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.contact-icon {
+  width: 44px; height: 44px; border-radius: 12px; background: var(--accent-glow);
+  display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.1rem; flex-shrink: 0;
+}
+.contact-detail span { color: var(--grey-600); font-size: 0.95rem; }
+.contact-detail a { color: var(--accent); text-decoration: none; font-weight: 500; }
+
+.contact-form { background: var(--grey-50); border-radius: 20px; padding: 2.5rem; }
+.form-group { margin-bottom: 1.25rem; }
+.form-group label {
+  display: block; font-size: 0.82rem; font-weight: 600; color: var(--navy-700);
+  margin-bottom: 0.4rem; letter-spacing: 0.02em;
+}
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%; padding: 0.8rem 1rem; border: 1.5px solid var(--grey-200);
+  border-radius: 10px; font-size: 0.95rem; font-family: var(--font-body);
+  transition: all 0.3s ease; background: var(--white); color: var(--navy-900);
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.form-group textarea { min-height: 120px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* ═══ FOOTER ═══ */
+footer {
+  background: var(--navy-950); color: var(--grey-400); padding: 4rem 2rem 2rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.footer-inner { max-width: 1280px; margin: 0 auto; }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+.footer-brand p { font-size: 0.85rem; line-height: 1.7; margin-top: 1rem; max-width: 300px; }
+.footer-col h4 { color: var(--white); font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: 0.05em; }
+.footer-col a { display: block; color: var(--grey-400); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.6rem; transition: color 0.3s ease; }
+.footer-col a:hover { color: var(--accent-light); }
+.footer-bottom { padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; }
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s var(--transition); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1024px) {
+  .product-flow { grid-template-columns: 1fr; }
+  .diff-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .hero-stats { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0.75rem 1.25rem; }
+  .nav-links { display: none; }
+  .mobile-toggle { display: block; }
+  .nav-links.open {
+    display: flex; flex-direction: column; position: absolute;
+    top: 100%; left: 0; right: 0; background: rgba(10,15,30,0.98);
+    padding: 1.5rem 2rem; gap: 1.25rem; border-bottom: 1px solid rgba(59,130,246,0.1);
+  }
+  section { padding: 4rem 1.25rem; }
+  .hero { padding: 6rem 1.25rem 4rem; }
+  .crisis-grid { grid-template-columns: 1fr; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+  .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="18" stroke="#3b82f6" stroke-width="2.5" fill="none"/>
+        <circle cx="20" cy="8" r="3" fill="#3b82f6"/>
+        <circle cx="20" cy="32" r="3" fill="#3b82f6"/>
+        <circle cx="8" cy="20" r="3" fill="#3b82f6"/>
+        <circle cx="32" cy="20" r="3" fill="#3b82f6"/>
+        <circle cx="20" cy="20" r="4" fill="#3b82f6"/>
+        <line x1="20" y1="11" x2="20" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+        <line x1="20" y1="24" x2="20" y2="29" stroke="#3b82f6" stroke-width="1.5"/>
+        <line x1="11" y1="20" x2="16" y2="20" stroke="#3b82f6" stroke-width="1.5"/>
+        <line x1="24" y1="20" x2="29" y2="20" stroke="#3b82f6" stroke-width="1.5"/>
+        <line x1="13" y1="13" x2="17" y2="17" stroke="#3b82f6" stroke-width="1.2"/>
+        <line x1="23" y1="23" x2="27" y2="27" stroke="#3b82f6" stroke-width="1.2"/>
+        <line x1="27" y1="13" x2="23" y2="17" stroke="#3b82f6" stroke-width="1.2"/>
+        <line x1="17" y1="23" x2="13" y2="27" stroke="#3b82f6" stroke-width="1.2"/>
+      </svg>
+      <span>SENSOL</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#problem">The Crisis</a></li>
+      <li><a href="#product">Product</a></li>
+      <li><a href="#difference">Why Sensol</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#blog">Insights</a></li>
+      <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+    </ul>
+    <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Building the future of SEND evidence</div>
+    <h1>The first platform that measures whether <span class="highlight">SEND provision actually works</span></h1>
+    <p class="hero-sub">638,745 children hold statutory support plans. £10.54 billion is spent annually. No one tracks whether it improves their lives. Until now.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Request Early Access →</a>
+      <a href="#product" class="btn-secondary">See How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <h3><span class="num-accent">638,745</span></h3>
+        <p>Active EHCPs under management, growing 10.8% year-on-year</p>
+      </div>
+      <div class="hero-stat">
+        <h3><span class="num-accent">46.4%</span></h3>
+        <p>Plans meeting the 20-week statutory deadline — the lowest rate on record</p>
+      </div>
+      <div class="hero-stat">
+        <h3><span class="num-accent">99%</span></h3>
+        <p>Council loss rate at SEND tribunal — a systemic failure, not contested outcomes</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE CRISIS ═══ -->
+<section class="section-light" id="problem">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">The Problem</p>
+      <h2>A system in crisis. Children paying the price.</h2>
+      <p>The UK SEND system is financially unsustainable, administratively overwhelmed, and producing plans that routinely fail legal standards.</p>
+    </div>
+    <div class="crisis-grid">
+      <div class="crisis-card reveal reveal-delay-1">
+        <div class="crisis-number red">£10.54B</div>
+        <h4>Annual High Needs Spending</h4>
+        <p>Spent each year on SEND provision with no structured evidence base showing which interventions work for which children.</p>
+        <div class="crisis-source">Source: DfE High Needs Block 2024/25</div>
+      </div>
+      <div class="crisis-card reveal reveal-delay-2">
+        <div class="crisis-number amber">53.6%</div>
+        <h4>Plans Delivered Late</h4>
+        <p>More than half of new EHCPs exceed the 20-week statutory deadline. Some councils achieve as low as 1% on-time delivery.</p>
+        <div class="crisis-source">Source: DfE SEN2 2025 Release</div>
+      </div>
+      <div class="crisis-card reveal reveal-delay-3">
+        <div class="crisis-number red">£153M</div>
+        <h4>Annual Tribunal Cost</h4>
+        <p>22,276 tribunal cases registered in 2024 — a 43% surge. Councils lost 99% of the 11,157 cases that reached hearing.</p>
+        <div class="crisis-source">Source: HMCTS Tribunal Statistics 2024; IPSEA</div>
+      </div>
+      <div class="crisis-card reveal reveal-delay-1">
+        <div class="crisis-number blue">~£6B</div>
+        <h4>Deficit Absorption</h4>
+        <p>Government absorbing LA deficits — conditional on councils submitting approved reform plans demonstrating improved outcomes.</p>
+        <div class="crisis-source">Source: DfE February 2026 Announcement</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRODUCT ═══ -->
+<section class="section-grey" id="product">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">The Platform</p>
+      <h2>From documentation to evidence</h2>
+      <p>Sensol covers the full SEND framework — from ISPs for schools to EHCPs for local authorities — with outcomes tracking built in from day one.</p>
+    </div>
+    <div class="product-flow reveal">
+      <div class="product-visual">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div><h4>Upload Professional Reports</h4><p>EP reports, medical assessments, parental statements — the AI extracts and structures key findings automatically.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div><h4>AI Generates Personalised Draft</h4><p>RAG-powered drafting retrieves relevant guidance and case law without training on child data. Every statement is cited.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div><h4>Quality Assurance & Golden Thread</h4><p>Automated validation ensures needs link to outcomes link to provision. Vague or non-quantified statements are flagged.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div><h4>Track Outcomes Over Time</h4><p>Every annual review feeds structured data connecting provision to progress — building the evidence no one else collects.</p></div>
+        </div>
+      </div>
+      <div class="product-text">
+        <h3>Not faster paperwork. An evidence base.</h3>
+        <p>Current tools make the existing broken process faster. Sensol asks a different question entirely: does the support specified in this plan actually improve the child's life?</p>
+        <p>Our platform builds the first structured, machine-readable dataset linking specific provisions to measured child outcomes across annual review cycles. Drawing on DfE attainment data, P-scales, attendance records, and the ECHILD linked dataset, we generate evidence that has never existed before.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">RAG Architecture</span>
+          <span class="feature-tag">Golden Thread Validation</span>
+          <span class="feature-tag">Outcomes Tracking</span>
+          <span class="feature-tag">Parent Portal</span>
+          <span class="feature-tag">Multi-Agency Orchestration</span>
+          <span class="feature-tag">Children's Code Compliant</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY SENSOL ═══ -->
+<section class="section-dark" id="difference">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">What Sets Us Apart</p>
+      <h2>Three capabilities no competitor offers</h2>
+      <p>The market has validated that councils pay for EHCP automation. Sensol goes where existing tools stop.</p>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card reveal reveal-delay-1">
+        <div class="diff-icon blue">📊</div>
+        <h3>Longitudinal Outcomes Tracking</h3>
+        <p>The only platform building a structured dataset linking SEND provision to measured child progress. No competitor addresses this — and the White Paper now makes outcomes accountability a condition of £6 billion in deficit funding.</p>
+      </div>
+      <div class="diff-card reveal reveal-delay-2">
+        <div class="diff-icon teal">👨‍👩‍👧</div>
+        <h3>Parent Transparency Portal</h3>
+        <p>Every existing EHCP tool serves only council users. Sensol gives families real-time visibility into plan progress, plain-English explanations, and provision delivery status — breaking the information asymmetry that drives tribunal appeals.</p>
+      </div>
+      <div class="diff-card reveal reveal-delay-3">
+        <div class="diff-icon amber">🔒</div>
+        <h3>Children's Code as Engineering</h3>
+        <p>We implement the ICO's Age Appropriate Design Code as automated technical controls — not a policy document. Purpose-coded data tagging, algorithmic transparency records, and detrimental use screening built into the middleware layer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEAM ═══ -->
+<section class="section-light" id="team">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">The Team</p>
+      <h2>Built by people who know this system from the inside</h2>
+      <p>Legal expertise. Frontline SEND experience. Production-grade engineering. The combination this market requires.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-avatar yvonne">YN</div>
+        <h3>Yvonne Wambui Nyangi</h3>
+        <div class="team-role">Founder & CEO</div>
+        <p>LL.M International Economic Law (Queen Mary). Legal advisory at The Commonwealth. Compliance at Clifford Chance. Frontline carer for individuals with learning disabilities and complex needs. FDI Moot champion (All Africa).</p>
+      </div>
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-avatar caylem">CU</div>
+        <h3>Caylem Urssher</h3>
+        <div class="team-role">Co-Founder & COO</div>
+        <p>SEND domain specialist with frontline experience across three local authority SEND teams: Lambeth, Newham, and Sandwell. Assessment caseworker, annual review tracking, EHCP quality assurance. Knows every workflow from the inside.</p>
+      </div>
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-avatar daniel">DO</div>
+        <h3>Daniel Wole Olamide</h3>
+        <div class="team-role">CTO</div>
+        <p>Software Engineer, Core Engineering (Authentication) at Goldman Sachs. Built RAG-powered AI systems. Led replacement of 20-year-old authentication system across 800+ applications. BSc Informatics & Computer Science, Strathmore University.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BLOG ═══ -->
+<section class="section-grey" id="blog">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">Insights</p>
+      <h2>Research, policy, and perspectives</h2>
+      <p>Analysis of the SEND landscape, AI in public services, and the evidence that shapes what we build.</p>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card reveal reveal-delay-1">
+        <div class="blog-img blog-img-1"><div class="blog-overlay">📋</div></div>
+        <div class="blog-body">
+          <div class="blog-meta"><span class="blog-tag">SEND Policy</span><span class="blog-date">Coming Soon</span></div>
+          <h3>What the February 2026 White Paper means for SEND technology</h3>
+          <p>Every Child Achieving and Thriving introduces ISPs, retains EHCPs, and makes outcomes accountability a condition of funding. We break down the implications.</p>
+          <a href="#" class="blog-link">Read article →</a>
+        </div>
+      </div>
+      <div class="blog-card reveal reveal-delay-2">
+        <div class="blog-img blog-img-2"><div class="blog-overlay">🔬</div></div>
+        <div class="blog-body">
+          <div class="blog-meta"><span class="blog-tag">Research</span><span class="blog-date">Coming Soon</span></div>
+          <h3>Why no one measures EHCP outcomes — and what it would take to start</h3>
+          <p>Castro-Kemp et al. found most EHCP outcomes are not functional or high quality. Ahad's review found no systematic tracking of provision effectiveness. The data gap is structural.</p>
+          <a href="#" class="blog-link">Read article →</a>
+        </div>
+      </div>
+      <div class="blog-card reveal reveal-delay-3">
+        <div class="blog-img blog-img-3"><div class="blog-overlay">⚖️</div></div>
+        <div class="blog-body">
+          <div class="blog-meta"><span class="blog-tag">AI & Ethics</span><span class="blog-date">Coming Soon</span></div>
+          <h3>Building AI for children's data: privacy, trust, and the Children's Code</h3>
+          <p>How Sensol implements the ICO's Age Appropriate Design Code as engineering specification — not just a policy document.</p>
+          <a href="#" class="blog-link">Read article →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="section-light" id="contact">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">Get in Touch</p>
+      <h2>Let's talk about what SEND provision could look like</h2>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <h3>Whether you're a local authority, a school, a parent, or an investor — we want to hear from you.</h3>
+        <p>Sensol is currently in pre-launch development. We are actively seeking pilot local authority partners, co-design participants, and seed investors who believe the SEND system deserves better evidence.</p>
+        <div class="contact-detail">
+          <div class="contact-icon">✉</div>
+          <div><span style="display:block;font-size:0.75rem;color:var(--grey-400);margin-bottom:0.15rem;">Email</span><a href="mailto:info@sensol.co.uk">info@sensol.co.uk</a></div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">🏢</div>
+          <div><span style="display:block;font-size:0.75rem;color:var(--grey-400);margin-bottom:0.15rem;">Company</span><span>Sensol Limited · England & Wales</span></div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">🌐</div>
+          <div><span style="display:block;font-size:0.75rem;color:var(--grey-400);margin-bottom:0.15rem;">Website</span><a href="https://sensol.co.uk">sensol.co.uk</a></div>
+        </div>
+      </div>
+      <form class="contact-form" action="https://formsubmit.co/info@sensol.co.uk" method="POST">
+        <input type="hidden" name="_subject" value="New enquiry from sensol.co.uk">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="_honey" style="display:none">
+        <input type="hidden" name="_next" value="https://sensol.co.uk/#contact">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@organisation.co.uk" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="type">I am a...</label>
+          <select id="type" name="type" required>
+            <option value="" disabled selected>Select your role</option>
+            <option value="la">Local Authority SEND Professional</option>
+            <option value="school">School / SENCO</option>
+            <option value="parent">Parent / Carer</option>
+            <option value="investor">Investor</option>
+            <option value="partner">Potential Partner</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us about your interest in Sensol..." required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">Send Message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="margin-bottom:0.5rem;">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+            <circle cx="20" cy="20" r="18" stroke="#3b82f6" stroke-width="2.5" fill="none"/>
+            <circle cx="20" cy="8" r="3" fill="#3b82f6"/><circle cx="20" cy="32" r="3" fill="#3b82f6"/>
+            <circle cx="8" cy="20" r="3" fill="#3b82f6"/><circle cx="32" cy="20" r="3" fill="#3b82f6"/>
+            <circle cx="20" cy="20" r="4" fill="#3b82f6"/>
+          </svg>
+          <span>SENSOL</span>
+        </a>
+        <p>Building the first evidence base for what works in SEND provision. AI-powered documentation. Measured outcomes. Transparent to families.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="#product">How It Works</a>
+        <a href="#difference">Why Sensol</a>
+        <a href="#">For Local Authorities</a>
+        <a href="#">For Schools</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#team">Team</a>
+        <a href="#blog">Insights</a>
+        <a href="#">Careers</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Sensol Limited. All rights reserved. Registered in England & Wales.</span>
+      <span>info@sensol.co.uk</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.getElementById('navLinks').classList.remove('open');
+    }
+  });
+});
+
+// Counter animation for hero stats
+function animateCounters() {
+  const counters = document.querySelectorAll('.num-accent');
+  counters.forEach(counter => {
+    const text = counter.textContent;
+    if (text.includes(',')) {
+      const target = parseInt(text.replace(/,/g, ''));
+      let current = 0;
+      const increment = target / 60;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          counter.textContent = target.toLocaleString();
+          clearInterval(timer);
+        } else {
+          counter.textContent = Math.floor(current).toLocaleString();
+        }
+      }, 25);
+    }
+  });
+}
+setTimeout(animateCounters, 500);
+</script>
+</body>
+</html>
