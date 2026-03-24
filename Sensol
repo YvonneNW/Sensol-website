@@ -1,0 +1,6 @@
+git init
+git add index.html SENSOL_logo.png
+git commit -m "Initial Sensol website"
+git branch -M main
+git remote add origin https://github.com/YOUR-USERNAME/sensol-website.git
+git push -u origin main
