@@ -1,822 +1,1007 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sensol | AI-Native SEND Research & Software Company</title>
-<meta name="description" content="Sensol explores, researches, and builds safe AI for the SEND sector. We are creating the evidence base that connects provision to outcomes for 638,745 children.">
-<meta name="keywords" content="SEND, EHCP, Education Health Care Plan, ISP, Individual Support Plan, AI, outcomes tracking, local authority, special educational needs, agentic AI, SEND research">
-<meta name="author" content="Sensol Limited">
-<meta property="og:title" content="Sensol | AI-Native SEND Research & Software Company">
-<meta property="og:description" content="£10 billion spent on SEND annually. Zero evidence of what works. We are building the research, the platform, and the agentic AI to change that.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://sensolltd.co.uk">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sensol — AI-native research & software for SEND</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="icon" href="assets/sensol-logo.png">
+<template id="__bundler_thumbnail" data-bg-color="#f4f1ea">
+  <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="400" fill="#f4f1ea"/>
+    <g transform="translate(200,200)" fill="none" stroke="#15223f" stroke-width="6">
+      <circle r="140"/>
+      <path d="M0 -100 L100 0 L0 100 L-100 0 Z"/>
+      <line x1="0" y1="-100" x2="0" y2="100"/>
+      <line x1="-100" y1="0" x2="100" y2="0"/>
+      <line x1="-70" y1="-70" x2="70" y2="70"/>
+      <line x1="70" y1="-70" x2="-70" y2="70"/>
+    </g>
+    <g fill="#15223f">
+      <circle cx="200" cy="100" r="9"/>
+      <circle cx="300" cy="200" r="9"/>
+      <circle cx="200" cy="300" r="9"/>
+      <circle cx="100" cy="200" r="9"/>
+      <circle cx="130" cy="130" r="7"/>
+      <circle cx="270" cy="130" r="7"/>
+      <circle cx="270" cy="270" r="7"/>
+      <circle cx="130" cy="270" r="7"/>
+    </g>
+  </svg>
+</template>
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/* Apple Garamond — not freely hosted. Fall back through EB Garamond.
+   If AppleGaramond is installed locally it will be picked up first. */
+@font-face {
+  font-family: 'Apple Garamond';
+  src: local('Apple Garamond'), local('AppleGaramond');
+  font-display: swap;
+}
 
 :root {
-  --navy-950: #0a0f1e;
-  --navy-900: #0d1528;
-  --navy-800: #142038;
-  --navy-700: #1b2a4a;
-  --navy-600: #243a63;
-  --navy-500: #2e4f82;
-  --accent: #3b82f6;
-  --accent-light: #60a5fa;
-  --accent-glow: rgba(59, 130, 246, 0.15);
-  --teal: #14b8a6;
-  --teal-light: #2dd4bf;
-  --warm: #f59e0b;
-  --white: #ffffff;
-  --grey-50: #f8fafc;
-  --grey-100: #f1f5f9;
-  --grey-200: #e2e8f0;
-  --grey-300: #cbd5e1;
-  --grey-400: #94a3b8;
-  --grey-500: #64748b;
-  --grey-600: #475569;
-  --grey-700: #334155;
-  --grey-800: #1e293b;
-  --font-display: 'Plus Jakarta Sans', sans-serif;
-  --font-body: 'Source Sans 3', sans-serif;
-  --transition: cubic-bezier(0.16, 1, 0.3, 1);
+  --ink: #15223f;
+  --ink-2: #1a2f5c;
+  --ink-3: #3a4a72;
+  --ink-soft: #6a7695;
+  --paper: #f4f1ea;
+  --paper-2: #ece7db;
+  --paper-3: #e2dcce;
+  --line: rgba(21,34,63,0.14);
+  --line-strong: rgba(21,34,63,0.28);
+  --accent: oklch(0.55 0.11 240);
+  --warn: oklch(0.58 0.13 30);
+  --serif: 'Apple Garamond', 'EB Garamond', 'Adobe Garamond Pro', Garamond, Georgia, serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 }
 
-html { scroll-behavior: smooth; font-size: 16px; }
-body { font-family: var(--font-body); color: var(--grey-700); background: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--serif);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-/* ═══ NAVIGATION ═══ */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 1rem 2rem;
-  transition: all 0.4s var(--transition);
-  background: transparent;
+::selection { background: var(--ink); color: var(--paper); }
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Grain / paper overlay ---------- */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  opacity: 0.35; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.13 0 0 0 0 0.25 0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
-nav.scrolled {
-  background: rgba(10, 15, 30, 0.92);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(59, 130, 246, 0.1);
-  padding: 0.75rem 2rem;
-}
-.nav-inner {
-  max-width: 1280px; margin: 0 auto;
+
+/* ---------- Nav ---------- */
+nav.site {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 18px 40px;
   display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(14px);
+  background: rgba(244,241,234,0.72);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, padding 0.3s ease;
 }
-.nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-.nav-logo svg { width: 36px; height: 36px; }
-.nav-logo span {
-  font-family: var(--font-display); font-weight: 700; font-size: 1.25rem;
-  color: var(--white); letter-spacing: 0.05em;
+nav.site.scrolled { border-bottom-color: var(--line); padding: 12px 40px; }
+nav.site .brand { display: flex; align-items: center; gap: 10px; font-family: var(--serif); letter-spacing: 0.18em; font-size: 15px; font-weight: 500; }
+nav.site .brand .mark { width: 26px; height: 26px; }
+nav.site ul { list-style: none; display: flex; gap: 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+nav.site ul a { color: var(--ink-soft); transition: color 0.2s; position: relative; padding: 4px 0; }
+nav.site ul a:hover, nav.site ul a.active { color: var(--ink); }
+nav.site ul a.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--ink); }
+nav.site .cta {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 10px 18px; border: 1px solid var(--ink); border-radius: 999px; color: var(--ink);
+  transition: all 0.2s; background: transparent;
 }
-.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
-.nav-links a {
-  text-decoration: none; color: rgba(255,255,255,0.7);
-  font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em;
-  transition: color 0.3s ease; position: relative;
-}
-.nav-links a::after {
-  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
-  background: var(--accent); transition: width 0.3s var(--transition);
-}
-.nav-links a:hover { color: var(--white); }
-.nav-links a:hover::after { width: 100%; }
-.nav-cta {
-  background: var(--accent); color: var(--white); padding: 0.6rem 1.5rem;
-  border-radius: 8px; font-weight: 600; font-size: 0.85rem;
-  text-decoration: none; transition: all 0.3s ease; border: none; cursor: pointer;
-}
-.nav-cta:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(59,130,246,0.3); }
-.mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
-.mobile-toggle span { display: block; width: 24px; height: 2px; background: var(--white); margin: 6px 0; transition: all 0.3s ease; }
+nav.site .cta:hover { background: var(--ink); color: var(--paper); }
 
-/* ═══ HERO ═══ */
+/* ---------- Generic section ---------- */
+section { position: relative; z-index: 2; padding: 140px 40px; }
+.wrap { max-width: 1280px; margin: 0 auto; }
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-soft); display: inline-flex; align-items: center; gap: 10px;
+}
+.eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+.eyebrow .num { color: var(--ink); }
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.015em; text-wrap: balance; }
+h1 { font-size: clamp(48px, 7.2vw, 108px); line-height: 0.98; }
+h2 { font-size: clamp(36px, 5vw, 68px); line-height: 1.02; }
+h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; }
+
+/* ---------- HERO ---------- */
 .hero {
-  min-height: 100vh; position: relative; overflow: hidden;
-  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 40%, var(--navy-800) 100%);
-  display: flex; align-items: center; padding: 8rem 2rem 6rem;
+  min-height: 100vh; padding-top: 120px; padding-bottom: 60px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
 }
-.hero-grid {
-  position: absolute; inset: 0; opacity: 0.06;
-  background-image: 
-    linear-gradient(rgba(59,130,246,0.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59,130,246,0.3) 1px, transparent 1px);
-  background-size: 60px 60px;
-  animation: gridPulse 8s ease-in-out infinite;
+.hero .canvas-wrap {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
 }
-@keyframes gridPulse { 0%, 100% { opacity: 0.04; } 50% { opacity: 0.08; } }
-.hero-orb {
-  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none;
+.hero .content { position: relative; z-index: 3; max-width: 1280px; margin: 0 auto; width: 100%; padding: 0 0; }
+.hero .meta-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-top: 40px;
 }
-.hero-orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -100px; animation: orbFloat 12s ease-in-out infinite; }
-.hero-orb-2 { width: 400px; height: 400px; background: var(--teal); bottom: -100px; left: -50px; animation: orbFloat 15s ease-in-out infinite reverse; }
-@keyframes orbFloat { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -40px); } }
+.hero h1 { margin: 60px 0 40px; max-width: 14ch; }
+.hero h1 .it { font-style: italic; font-weight: 400; color: var(--ink-2); }
+.hero h1 .strike { position: relative; display: inline-block; }
+.hero h1 .strike::after {
+  content:''; position:absolute; left:-2%; right:-2%; top:55%; height:4px; background: var(--warn);
+  transform: scaleX(0); transform-origin: left; animation: strike 1.2s 1.5s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes strike { to { transform: scaleX(1); } }
 
-.hero-content { max-width: 1280px; margin: 0 auto; position: relative; z-index: 2; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25);
-  padding: 0.5rem 1rem; border-radius: 100px; margin-bottom: 2rem;
-  font-size: 0.8rem; color: var(--accent-light); font-weight: 500; letter-spacing: 0.03em;
-  animation: fadeInUp 0.8s var(--transition) both;
+.hero .lede {
+  max-width: 560px; font-size: 22px; color: var(--ink-3); line-height: 1.45;
+  margin-bottom: 44px;
 }
-.hero-badge .dot { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; animation: pulse 2s infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-.hero h1 {
-  font-family: var(--font-display); font-size: clamp(2.5rem, 5.5vw, 4.5rem);
-  font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 1.5rem;
-  max-width: 800px; letter-spacing: -0.02em;
-  animation: fadeInUp 0.8s var(--transition) 0.1s both;
+.hero .actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 16px 26px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px;
+  border: 1px solid var(--ink); transition: all 0.25s cubic-bezier(.2,.8,.2,1); cursor: pointer;
 }
-.hero h1 .highlight {
-  background: linear-gradient(135deg, var(--accent-light), var(--teal-light));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.hero-sub {
-  font-size: clamp(1rem, 1.8vw, 1.25rem); color: var(--grey-400);
-  max-width: 600px; line-height: 1.7; margin-bottom: 2.5rem;
-  animation: fadeInUp 0.8s var(--transition) 0.2s both;
-}
-.hero-actions {
-  display: flex; gap: 1rem; flex-wrap: wrap;
-  animation: fadeInUp 0.8s var(--transition) 0.3s both;
-}
-.btn-primary {
-  background: var(--accent); color: var(--white); padding: 0.9rem 2rem;
-  border-radius: 10px; font-weight: 600; font-size: 0.95rem;
-  text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem;
-  border: none; cursor: pointer; font-family: var(--font-body);
-}
-.btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.3); }
-.btn-secondary {
-  background: transparent; color: var(--white); padding: 0.9rem 2rem;
-  border-radius: 10px; font-weight: 500; font-size: 0.95rem;
-  text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem;
-  border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-family: var(--font-body);
-}
-.btn-secondary:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(59,130,246,0.05); }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: var(--ink-2); transform: translateY(-1px); }
+.btn.ghost { color: var(--ink); }
+.btn.ghost:hover { background: var(--ink); color: var(--paper); }
+.btn .arrow { display: inline-block; transition: transform 0.25s; }
+.btn:hover .arrow { transform: translateX(3px); }
 
-.hero-stats {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
-  margin-top: 4rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.06);
-  animation: fadeInUp 0.8s var(--transition) 0.4s both;
+.hero .ticker {
+  border-top: 1px solid var(--line);
+  margin-top: 80px;
+  padding-top: 20px;
+  display: flex; justify-content: space-between; gap: 60px;
+  font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+  letter-spacing: 0.06em;
 }
-.hero-stat h3 {
-  font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 700; color: var(--white); margin-bottom: 0.25rem;
-}
-.hero-stat h3 .num-accent { color: var(--accent-light); }
-.hero-stat p { color: var(--grey-400); font-size: 0.85rem; line-height: 1.5; }
+.hero .ticker .item { display: flex; flex-direction: column; gap: 6px; }
+.hero .ticker .k { color: var(--ink); font-size: 22px; font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+/* scroll hint */
+.scroll-hint {
+  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft);
+  display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 4;
 }
+.scroll-hint .line { width: 1px; height: 40px; background: linear-gradient(var(--ink-soft), transparent); animation: drop 2s ease-in-out infinite; }
+@keyframes drop { 0%,100%{transform:scaleY(0.6); transform-origin:top;} 50%{transform:scaleY(1);} }
 
-/* ═══ SECTIONS (LIGHT) ═══ */
-section { padding: 6rem 2rem; }
-.section-light { background: var(--white); }
-.section-grey { background: var(--grey-50); }
-.section-dark { background: var(--navy-950); color: var(--white); }
-.container { max-width: 1280px; margin: 0 auto; }
+/* ---------- CRISIS ---------- */
+.crisis { background: var(--ink); color: var(--paper); overflow: hidden; }
+.crisis .eyebrow { color: rgba(244,241,234,0.6); }
+.crisis .eyebrow .num { color: var(--paper); }
+.crisis h2 { margin: 18px 0 60px; max-width: 18ch; }
+.crisis h2 em { font-style: italic; color: rgba(244,241,234,0.7); font-weight: 400; }
+.crisis .grid {
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 1px;
+  background: rgba(244,241,234,0.14);
+  border: 1px solid rgba(244,241,234,0.14);
+}
+.crisis .cell {
+  background: var(--ink); padding: 40px;
+  grid-column: span 6; min-height: 320px; position: relative;
+  display: flex; flex-direction: column; justify-content: space-between;
+  transition: background 0.3s;
+}
+.crisis .cell:hover { background: #0e1a33; }
+.crisis .cell.wide { grid-column: span 6; }
+.crisis .cell .idx { font-family: var(--mono); font-size: 11px; color: rgba(244,241,234,0.4); letter-spacing: 0.14em; }
+.crisis .cell .big {
+  font-family: var(--serif); font-size: clamp(64px, 8vw, 120px);
+  line-height: 0.95; letter-spacing: -0.02em; font-weight: 400;
+  display: flex; align-items: baseline; gap: 4px;
+}
+.crisis .cell .big .unit { font-size: 0.45em; color: rgba(244,241,234,0.5); margin-left: 4px; }
+.crisis .cell .desc { font-size: 17px; color: rgba(244,241,234,0.75); max-width: 40ch; line-height: 1.45; }
+.crisis .cell .src { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(244,241,234,0.4); }
 
-.section-header { text-align: center; margin-bottom: 4rem; }
-.section-label {
-  font-family: var(--font-display); font-size: 0.75rem; font-weight: 600;
-  color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem;
+.crisis .pullquote {
+  margin-top: 80px; font-family: var(--serif); font-style: italic; font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.25; max-width: 26ch; color: rgba(244,241,234,0.85);
+  padding-left: 40px; border-left: 2px solid var(--warn);
 }
-.section-dark .section-label { color: var(--accent-light); }
-.section-header h2 {
-  font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  font-weight: 700; color: var(--navy-900); line-height: 1.2; margin-bottom: 1rem;
-  letter-spacing: -0.02em;
-}
-.section-dark .section-header h2 { color: var(--white); }
-.section-header p { color: var(--grey-500); font-size: 1.1rem; max-width: 640px; margin: 0 auto; line-height: 1.7; }
-.section-dark .section-header p { color: var(--grey-400); }
+.crisis .pullquote .attr { display: block; font-style: normal; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244,241,234,0.5); margin-top: 20px; }
 
-/* ═══ PROBLEM / CRISIS STATS ═══ */
-.crisis-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
-}
-.crisis-card {
-  background: var(--white); border: 1px solid var(--grey-200); border-radius: 16px;
-  padding: 2rem; transition: all 0.4s var(--transition); position: relative; overflow: hidden;
-}
-.crisis-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--teal));
-  transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--transition);
-}
-.crisis-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); border-color: transparent; }
-.crisis-card:hover::before { transform: scaleX(1); }
-.crisis-number {
-  font-family: var(--font-display); font-size: 2.5rem; font-weight: 700;
-  color: var(--navy-900); margin-bottom: 0.5rem; line-height: 1;
-}
-.crisis-number.red { color: #ef4444; }
-.crisis-number.amber { color: var(--warm); }
-.crisis-number.blue { color: var(--accent); }
-.crisis-card h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; color: var(--navy-700); margin-bottom: 0.5rem; }
-.crisis-card p { font-size: 0.85rem; color: var(--grey-500); line-height: 1.6; }
-.crisis-source { font-size: 0.7rem; color: var(--grey-400); margin-top: 0.75rem; font-style: italic; }
+/* ---------- PRODUCT ---------- */
+.product { padding-top: 180px; padding-bottom: 180px; }
+.product .head { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; margin-bottom: 80px; }
+.product h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+.product .head p { color: var(--ink-3); font-size: 20px; max-width: 46ch; margin-top: 20px; }
+.product .head .tags { display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; align-self: end; }
+.product .head .tags span { font-family: var(--mono); font-size: 11px; padding: 8px 14px; border: 1px solid var(--line-strong); border-radius: 999px; letter-spacing: 0.06em; color: var(--ink-3); }
 
-/* ═══ PRODUCT / HOW IT WORKS ═══ */
-.product-flow {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+.flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.flow .step {
+  padding: 36px 28px; border-right: 1px solid var(--line); position: relative; min-height: 340px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  transition: background 0.3s;
 }
-.product-visual {
-  background: linear-gradient(135deg, var(--navy-900), var(--navy-800));
-  border-radius: 20px; padding: 3rem; position: relative; overflow: hidden;
-  min-height: 400px; display: flex; flex-direction: column; justify-content: center;
-}
-.product-visual::before {
-  content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%;
-  background: radial-gradient(circle at 30% 40%, rgba(59,130,246,0.08), transparent 60%);
-}
-.flow-step {
-  display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem;
-  padding: 1rem; border-radius: 12px; transition: all 0.3s ease; position: relative; z-index: 1;
-}
-.flow-step:hover { background: rgba(255,255,255,0.04); }
-.flow-num {
-  width: 32px; height: 32px; border-radius: 8px; background: rgba(59,130,246,0.2);
-  color: var(--accent-light); display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
-}
-.flow-step h4 { color: var(--white); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
-.flow-step p { color: var(--grey-400); font-size: 0.82rem; line-height: 1.5; }
+.flow .step:last-child { border-right: none; }
+.flow .step:hover { background: var(--paper-2); }
+.flow .step .num { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); letter-spacing: 0.14em; }
+.flow .step h3 { font-size: 24px; margin: 18px 0 12px; letter-spacing: -0.015em; }
+.flow .step h3 em { font-style: italic; color: var(--ink-3); font-weight: 400; }
+.flow .step p { font-size: 15px; color: var(--ink-3); line-height: 1.5; }
+.flow .step .diagram { height: 80px; margin-top: 20px; }
 
-.product-text h3 {
-  font-family: var(--font-display); font-size: 1.8rem; font-weight: 700;
-  color: var(--navy-900); margin-bottom: 1rem; line-height: 1.2;
-}
-.product-text p { color: var(--grey-600); line-height: 1.8; margin-bottom: 1.5rem; font-size: 1rem; }
-.feature-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
-.feature-tag {
-  background: var(--accent-glow); color: var(--accent); padding: 0.4rem 1rem;
-  border-radius: 100px; font-size: 0.78rem; font-weight: 600; border: 1px solid rgba(59,130,246,0.15);
+.connector-layer {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
 }
 
-/* ═══ DIFFERENTIATORS ═══ */
-.diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-.diff-card {
-  padding: 2.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.02); transition: all 0.4s var(--transition);
+/* ---------- WHY US ---------- */
+.whyus { background: var(--paper-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.whyus .head { max-width: 800px; margin-bottom: 80px; }
+.whyus .head h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+.whyus .head p { margin-top: 20px; color: var(--ink-3); font-size: 20px; }
+.whyus .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.whyus .pillar {
+  background: var(--paper); border: 1px solid var(--line); padding: 36px 32px 44px;
+  display: flex; flex-direction: column; gap: 20px; min-height: 520px;
+  position: relative; overflow: hidden;
+  transition: transform 0.4s cubic-bezier(.2,.8,.2,1), border-color 0.3s;
 }
-.diff-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(59,130,246,0.2); transform: translateY(-4px); }
-.diff-icon {
-  width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-  margin-bottom: 1.5rem; font-size: 1.5rem;
+.whyus .pillar:hover { transform: translateY(-4px); border-color: var(--ink); }
+.whyus .pillar .glyph { width: 64px; height: 64px; }
+.whyus .pillar h3 { font-size: 26px; letter-spacing: -0.015em; }
+.whyus .pillar p { color: var(--ink-3); font-size: 16px; }
+.whyus .pillar .label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: -4px;
 }
-.diff-icon.blue { background: rgba(59,130,246,0.15); }
-.diff-icon.teal { background: rgba(20,184,166,0.15); }
-.diff-icon.amber { background: rgba(245,158,11,0.15); }
-.diff-card h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--white); margin-bottom: 0.75rem; }
-.diff-card p { color: var(--grey-400); font-size: 0.9rem; line-height: 1.7; }
+.whyus .pillar .stat { margin-top: auto; font-family: var(--serif); font-size: 40px; font-weight: 500; letter-spacing: -0.01em; }
+.whyus .pillar .stat .cap { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-soft); display: block; margin-top: 4px; }
 
-/* ═══ TEAM ═══ */
-.team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-.team-card {
-  background: var(--white); border: 1px solid var(--grey-200); border-radius: 16px;
-  padding: 2.5rem; text-align: center; transition: all 0.4s var(--transition);
-}
-.team-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
-.team-avatar {
-  width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1.5rem;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--white);
-}
-.team-avatar.yvonne { background: linear-gradient(135deg, var(--accent), #6366f1); }
-.team-avatar.caylem { background: linear-gradient(135deg, var(--teal), #059669); }
-.team-avatar.daniel { background: linear-gradient(135deg, var(--warm), #ea580c); }
-.team-card h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--navy-900); margin-bottom: 0.25rem; }
-.team-role { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; }
-.team-card p { color: var(--grey-500); font-size: 0.85rem; line-height: 1.6; }
+/* ---------- TEAM ---------- */
+.team { padding-top: 180px; }
+.team .head { display: grid; grid-template-columns: 1.15fr 1fr; gap: 60px; align-items: end; margin-bottom: 80px; }
+.team h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+.team .head p { color: var(--ink-3); font-size: 20px; max-width: 46ch; }
 
-/* ═══ BLOG ═══ */
-.blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; }
-.blog-card {
-  background: var(--white); border: 1px solid var(--grey-200); border-radius: 16px;
-  overflow: hidden; transition: all 0.4s var(--transition);
+.roster-list { border-top: 1px solid var(--line-strong); }
+.roster-list .entry {
+  display: grid; grid-template-columns: 80px 1.1fr 1.6fr; gap: 40px;
+  padding: 44px 0; border-bottom: 1px solid var(--line);
+  align-items: start;
+  transition: background 0.3s, padding 0.3s;
 }
-.blog-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
-.blog-img {
-  height: 200px; position: relative; overflow: hidden;
-}
-.blog-img-1 { background: linear-gradient(135deg, var(--navy-900), var(--accent)); }
-.blog-img-2 { background: linear-gradient(135deg, #059669, var(--teal)); }
-.blog-img-3 { background: linear-gradient(135deg, var(--warm), #ea580c); }
-.blog-img .blog-overlay {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  font-size: 3rem; opacity: 0.3;
-}
-.blog-body { padding: 1.5rem 2rem 2rem; }
-.blog-meta { display: flex; gap: 1rem; margin-bottom: 0.75rem; }
-.blog-tag {
-  font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--accent); background: var(--accent-glow); padding: 0.25rem 0.6rem; border-radius: 4px;
-}
-.blog-date { font-size: 0.78rem; color: var(--grey-400); }
-.blog-card h3 {
-  font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
-  color: var(--navy-900); margin-bottom: 0.5rem; line-height: 1.4;
-}
-.blog-card p { color: var(--grey-500); font-size: 0.85rem; line-height: 1.6; }
-.blog-link {
-  display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 1rem;
-  color: var(--accent); font-size: 0.85rem; font-weight: 600; text-decoration: none;
-  transition: gap 0.3s ease;
-}
-.blog-link:hover { gap: 0.6rem; }
+.roster-list .entry:hover { background: var(--paper-2); padding-left: 16px; padding-right: 16px; }
+.roster-list .entry-idx { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; color: var(--ink-soft); padding-top: 10px; }
+.roster-list .entry-name .role { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px; }
+.roster-list .entry-name .name { font-family: var(--serif); font-size: clamp(28px, 3vw, 40px); line-height: 1.05; letter-spacing: -0.015em; color: var(--ink); }
+.roster-list .entry-bio p { font-size: 18px; color: var(--ink-3); line-height: 1.5; max-width: 52ch; }
+.roster-list .entry-bio .creds { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+.roster-list .entry-bio .creds span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-soft); padding: 6px 12px; border: 1px solid var(--line-strong); border-radius: 999px; }
 
-/* ═══ CONTACT ═══ */
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
-.contact-info h3 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--navy-900); margin-bottom: 1rem; }
-.contact-info p { color: var(--grey-600); line-height: 1.8; margin-bottom: 2rem; }
-.contact-detail { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
-.contact-icon {
-  width: 44px; height: 44px; border-radius: 12px; background: var(--accent-glow);
-  display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.1rem; flex-shrink: 0;
+@media (max-width: 960px) {
+  .roster-list .entry { grid-template-columns: 1fr; gap: 14px; padding: 32px 0; }
+  .roster-list .entry:hover { padding-left: 0; padding-right: 0; }
 }
-.contact-detail span { color: var(--grey-600); font-size: 0.95rem; }
-.contact-detail a { color: var(--accent); text-decoration: none; font-weight: 500; }
 
-.contact-form { background: var(--grey-50); border-radius: 20px; padding: 2.5rem; }
-.form-group { margin-bottom: 1.25rem; }
-.form-group label {
-  display: block; font-size: 0.82rem; font-weight: 600; color: var(--navy-700);
-  margin-bottom: 0.4rem; letter-spacing: 0.02em;
+/* ---------- RESEARCH ---------- */
+.research { background: var(--ink); color: var(--paper); padding-top: 180px; padding-bottom: 180px; }
+.research .eyebrow { color: rgba(244,241,234,0.6); }
+.research .eyebrow .num { color: var(--paper); }
+.research .head { margin-bottom: 80px; max-width: 900px; }
+.research h2 em { font-style: italic; color: rgba(244,241,234,0.7); font-weight: 400; }
+.research .head p { margin-top: 20px; color: rgba(244,241,234,0.7); font-size: 20px; }
+.research .papers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(244,241,234,0.14); border: 1px solid rgba(244,241,234,0.14); }
+.research .paper {
+  background: var(--ink); padding: 36px; min-height: 460px;
+  display: flex; flex-direction: column; gap: 20px;
+  transition: background 0.3s; cursor: pointer;
 }
-.form-group input, .form-group textarea, .form-group select {
-  width: 100%; padding: 0.8rem 1rem; border: 1.5px solid var(--grey-200);
-  border-radius: 10px; font-size: 0.95rem; font-family: var(--font-body);
-  transition: all 0.3s ease; background: var(--white); color: var(--navy-900);
+.research .paper:hover { background: #0e1a33; }
+.research .paper .tag {
+  align-self: flex-start; font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(244,241,234,0.7); padding: 6px 10px; border: 1px solid rgba(244,241,234,0.3);
 }
-.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow);
-}
-.form-group textarea { min-height: 120px; resize: vertical; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.research .paper .meta { font-family: var(--mono); font-size: 11px; color: rgba(244,241,234,0.4); letter-spacing: 0.1em; }
+.research .paper h3 { font-size: 26px; line-height: 1.15; letter-spacing: -0.015em; }
+.research .paper h3 em { font-style: italic; color: rgba(244,241,234,0.6); font-weight: 400; }
+.research .paper p { color: rgba(244,241,234,0.6); font-size: 15px; }
+.research .paper .cta { margin-top: auto; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper); display: flex; align-items: center; gap: 8px; }
+.research .paper:hover .cta .arrow { transform: translateX(4px); }
+.research .paper .cta .arrow { transition: transform 0.2s; }
 
-/* ═══ FOOTER ═══ */
-footer {
-  background: var(--navy-950); color: var(--grey-400); padding: 4rem 2rem 2rem;
-  border-top: 1px solid rgba(255,255,255,0.05);
+.research .annotation {
+  margin-top: 60px; display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;
+  font-family: var(--mono); font-size: 11px; color: rgba(244,241,234,0.5); letter-spacing: 0.1em; text-transform: uppercase;
 }
-.footer-inner { max-width: 1280px; margin: 0 auto; }
-.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
-.footer-brand p { font-size: 0.85rem; line-height: 1.7; margin-top: 1rem; max-width: 300px; }
-.footer-col h4 { color: var(--white); font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: 0.05em; }
-.footer-col a { display: block; color: var(--grey-400); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.6rem; transition: color 0.3s ease; }
-.footer-col a:hover { color: var(--accent-light); }
-.footer-bottom { padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; }
+.research .annotation .line { height: 1px; background: rgba(244,241,234,0.2); }
 
-/* ═══ SCROLL REVEAL ═══ */
-.reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s var(--transition); }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
+/* ---------- CONTACT ---------- */
+.contact { padding-top: 180px; padding-bottom: 120px; }
+.contact .lay { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: start; }
+.contact h2 { max-width: 18ch; }
+.contact h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+.contact .left p.lede { margin-top: 24px; color: var(--ink-3); font-size: 20px; max-width: 42ch; }
+.contact .left .info { margin-top: 50px; display: flex; flex-direction: column; gap: 24px; border-top: 1px solid var(--line); padding-top: 30px; }
+.contact .left .info .row { display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: baseline; font-family: var(--mono); font-size: 13px; }
+.contact .left .info .row .k { color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px; }
+.contact .left .info .row .v { color: var(--ink); }
+.contact .left .info .row .v a { border-bottom: 1px solid var(--line-strong); padding-bottom: 2px; }
+.contact .left .info .row .v a:hover { border-color: var(--ink); }
 
-/* ═══ RESPONSIVE ═══ */
-@media (max-width: 1024px) {
-  .product-flow { grid-template-columns: 1fr; }
-  .diff-grid { grid-template-columns: 1fr; }
-  .team-grid { grid-template-columns: 1fr; }
-  .contact-grid { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr 1fr; }
-  .hero-stats { grid-template-columns: 1fr; gap: 1.5rem; }
+form {
+  background: var(--paper-2); border: 1px solid var(--line);
+  padding: 40px; display: flex; flex-direction: column; gap: 20px;
 }
-@media (max-width: 768px) {
-  nav { padding: 0.75rem 1.25rem; }
-  .nav-links { display: none; }
-  .mobile-toggle { display: block; }
-  .nav-links.open {
-    display: flex; flex-direction: column; position: absolute;
-    top: 100%; left: 0; right: 0; background: rgba(10,15,30,0.98);
-    padding: 1.5rem 2rem; gap: 1.25rem; border-bottom: 1px solid rgba(59,130,246,0.1);
-  }
-  section { padding: 4rem 1.25rem; }
-  .hero { padding: 6rem 1.25rem 4rem; }
-  .crisis-grid { grid-template-columns: 1fr; }
-  .blog-grid { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr; gap: 2rem; }
-  .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+form .field { display: flex; flex-direction: column; gap: 8px; }
+form label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
+form input, form select, form textarea {
+  font-family: var(--serif); font-size: 18px; padding: 12px 0;
+  background: transparent; border: none; border-bottom: 1px solid var(--line-strong);
+  color: var(--ink); outline: none; resize: vertical;
+  transition: border-color 0.2s;
+}
+form input:focus, form select:focus, form textarea:focus { border-bottom-color: var(--ink); }
+form textarea { min-height: 100px; }
+form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+form .submit { align-self: flex-start; margin-top: 10px; }
+
+/* ---------- FOOTER ---------- */
+footer.site {
+  background: var(--ink); color: rgba(244,241,234,0.7); padding: 80px 40px 40px;
+  position: relative; z-index: 2;
+}
+footer.site .wrap { max-width: 1280px; margin: 0 auto; }
+footer.site .top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 60px; border-bottom: 1px solid rgba(244,241,234,0.14); }
+footer.site .brand { display: flex; align-items: center; gap: 12px; font-family: var(--serif); font-size: 28px; letter-spacing: 0.12em; color: var(--paper); }
+footer.site .brand .mark { width: 40px; height: 40px; }
+footer.site .blurb { margin-top: 20px; font-size: 15px; max-width: 40ch; line-height: 1.5; }
+footer.site h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper); margin-bottom: 16px; font-weight: 500; }
+footer.site ul { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; }
+footer.site ul a:hover { color: var(--paper); }
+footer.site .bottom {
+  padding-top: 30px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: rgba(244,241,234,0.5);
+}
+
+/* ---------- Logo mark svg sizing ---------- */
+.mark { display: block; }
+
+/* ---------- Reveal ---------- */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s cubic-bezier(.2,.8,.2,1), transform 0.9s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal.d1 { transition-delay: 0.08s; }
+.reveal.d2 { transition-delay: 0.16s; }
+.reveal.d3 { transition-delay: 0.24s; }
+.reveal.d4 { transition-delay: 0.32s; }
+.reveal.d5 { transition-delay: 0.4s; }
+
+/* responsive */
+@media (max-width: 960px) {
+  nav.site { padding: 14px 20px; }
+  nav.site ul { display: none; }
+  section { padding: 100px 20px; }
+  .hero .ticker { flex-wrap: wrap; gap: 20px; }
+  .crisis .cell { grid-column: span 12; }
+  .product .head, .team .head, .contact .lay { grid-template-columns: 1fr; }
+  .flow { grid-template-columns: 1fr; }
+  .flow .step { border-right: none; border-bottom: 1px solid var(--line); }
+  .whyus .pillars, .team .roster, .research .papers { grid-template-columns: 1fr; }
+  footer.site .top { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══ NAVIGATION ═══ -->
-<nav id="navbar">
-  <div class="nav-inner">
-    <a href="#" class="nav-logo">
-      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="20" cy="20" r="18" stroke="#3b82f6" stroke-width="2.5" fill="none"/>
-        <circle cx="20" cy="8" r="3" fill="#3b82f6"/>
-        <circle cx="20" cy="32" r="3" fill="#3b82f6"/>
-        <circle cx="8" cy="20" r="3" fill="#3b82f6"/>
-        <circle cx="32" cy="20" r="3" fill="#3b82f6"/>
-        <circle cx="20" cy="20" r="4" fill="#3b82f6"/>
-        <line x1="20" y1="11" x2="20" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
-        <line x1="20" y1="24" x2="20" y2="29" stroke="#3b82f6" stroke-width="1.5"/>
-        <line x1="11" y1="20" x2="16" y2="20" stroke="#3b82f6" stroke-width="1.5"/>
-        <line x1="24" y1="20" x2="29" y2="20" stroke="#3b82f6" stroke-width="1.5"/>
-        <line x1="13" y1="13" x2="17" y2="17" stroke="#3b82f6" stroke-width="1.2"/>
-        <line x1="23" y1="23" x2="27" y2="27" stroke="#3b82f6" stroke-width="1.2"/>
-        <line x1="27" y1="13" x2="23" y2="17" stroke="#3b82f6" stroke-width="1.2"/>
-        <line x1="17" y1="23" x2="13" y2="27" stroke="#3b82f6" stroke-width="1.2"/>
-      </svg>
-      <span>SENSOL</span>
-    </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#problem">The Crisis</a></li>
-      <li><a href="#product">Product</a></li>
-      <li><a href="#difference">Why Sensol</a></li>
-      <li><a href="#team">Team</a></li>
-      <li><a href="#blog">Insights</a></li>
-      <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
-    </ul>
-    <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
+<div class="grain"></div>
+
+<nav class="site" id="nav">
+  <a class="brand" href="#top" aria-label="Sensol home">
+    <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.8">
+      <circle cx="32" cy="32" r="28"/>
+      <g stroke-width="2">
+        <path d="M32 12 L50 32 L32 52 L14 32 Z" fill="none"/>
+        <line x1="32" y1="12" x2="32" y2="52"/>
+        <line x1="14" y1="32" x2="50" y2="32"/>
+        <line x1="20" y1="20" x2="44" y2="44"/>
+        <line x1="44" y1="20" x2="20" y2="44"/>
+      </g>
+      <g fill="currentColor">
+        <circle cx="32" cy="12" r="2.6"/>
+        <circle cx="50" cy="32" r="2.6"/>
+        <circle cx="32" cy="52" r="2.6"/>
+        <circle cx="14" cy="32" r="2.6"/>
+        <circle cx="20" cy="20" r="2.2"/>
+        <circle cx="44" cy="20" r="2.2"/>
+        <circle cx="44" cy="44" r="2.2"/>
+        <circle cx="20" cy="44" r="2.2"/>
+        <circle cx="32" cy="32" r="2"/>
+      </g>
+    </svg>
+    <span>SENSOL</span>
+  </a>
+  <ul>
+    <li><a href="#crisis" data-link>The Crisis</a></li>
+    <li><a href="#product" data-link>Product</a></li>
+    <li><a href="#whyus" data-link>Why Us</a></li>
+    <li><a href="#team" data-link>Team</a></li>
+    <li><a href="#research" data-link>Research</a></li>
+    <li><a href="#contact" data-link>Contact</a></li>
+  </ul>
+  <a class="cta" href="#contact">Early Access →</a>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero" id="home">
-  <div class="hero-grid"></div>
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
-  <div class="hero-content">
-    <div class="hero-badge"><span class="dot"></span> AI-native SEND research and software company</div>
-    <h1>£10 billion spent annually on SEND. Zero evidence of <span class="highlight">what actually works.</span></h1>
-    <p class="hero-sub">We are building the research, the platform, and the agentic AI to change that. Safe by design. Evidence by default. Built for 638,745 children who deserve better than paperwork.</p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Request Early Access →</a>
-      <a href="#product" class="btn-secondary">See How It Works</a>
+<!-- HERO ============================================================ -->
+<section class="hero" id="top">
+  <div class="canvas-wrap"><canvas id="net"></canvas></div>
+
+  <div class="content">
+    <div class="meta-row">
+      <span>SENSOL / LONDON · EST. 2026</span>
+      <span>AI-NATIVE · SEND · RESEARCH &amp; SOFTWARE</span>
     </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <h3><span class="num-accent">638,745</span></h3>
-        <p>Children with active EHCPs in England. Growing 10.8% every year with no sign of slowing.</p>
+
+    <h1 class="reveal in">
+      £10 billion spent<br>
+      on SEND. <span class="it">Zero</span><br>
+      <span class="strike">evidence</span> of what<br>
+      actually works.
+    </h1>
+
+    <p class="lede reveal d2">
+      We are building the research, the platform, and the agentic AI to change that.
+      Safe by design. Evidence by default. Built for the 638,745 children
+      who deserve better than paperwork.
+    </p>
+
+    <div class="actions reveal d3">
+      <a class="btn primary" href="#contact">Request early access <span class="arrow">→</span></a>
+      <a class="btn ghost" href="#product">See how it works</a>
+    </div>
+
+    <div class="ticker reveal d4">
+      <div class="item"><span>Children with active EHCPs</span><span class="k" data-count="638745">638,745</span></div>
+      <div class="item"><span>Annual SEND spend</span><span class="k">£10.54B</span></div>
+      <div class="item"><span>Councils losing at tribunal</span><span class="k" data-count="99" data-suffix="%">99%</span></div>
+      <div class="item"><span>Plans arriving on time</span><span class="k" data-count="46.4" data-suffix="%">46.4%</span></div>
+    </div>
+  </div>
+
+  <div class="scroll-hint"><span>scroll</span><div class="line"></div></div>
+</section>
+
+<!-- CRISIS =========================================================== -->
+<section class="crisis" id="crisis">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot"></span><span class="num">01</span>&nbsp;&nbsp;The Crisis</div>
+    <h2 class="reveal">This is not a funding problem.<br><em>It is an evidence problem.</em></h2>
+
+    <div class="grid">
+      <div class="cell reveal">
+        <div>
+          <div class="idx">01 · SPEND</div>
+          <div class="big">£10.54<span class="unit">B</span></div>
+        </div>
+        <div class="desc">Annual high-needs spending across England. Not a single structured dataset connects this money to whether children's lives improve.</div>
+        <div class="src">DfE High Needs Block 2024/25</div>
       </div>
-      <div class="hero-stat">
-        <h3><span class="num-accent">46.4%</span></h3>
-        <p>The proportion meeting the 20-week statutory deadline. The lowest compliance rate ever recorded.</p>
+      <div class="cell reveal d1">
+        <div>
+          <div class="idx">02 · DELAY</div>
+          <div class="big">53.6<span class="unit">%</span></div>
+        </div>
+        <div class="desc">Over half of new EHCPs miss the statutory 20-week deadline. At the worst councils, on-time issuance drops to 1%. Children wait months or years for support.</div>
+        <div class="src">DfE SEN2 2025 Release</div>
       </div>
-      <div class="hero-stat">
-        <h3><span class="num-accent">99%</span></h3>
-        <p>How often councils lose at SEND tribunal. Not contested cases. Systemic failure on paper.</p>
+      <div class="cell reveal d2">
+        <div>
+          <div class="idx">03 · LITIGATION</div>
+          <div class="big">£153<span class="unit">M</span></div>
+        </div>
+        <div class="desc">22,276 tribunal cases in 2024. A 43% surge. Councils lost 99% of those that reached a hearing. These are not close calls - they are plans that never should have been issued.</div>
+        <div class="src">HMCTS Tribunal Statistics 2024 · IPSEA</div>
+      </div>
+      <div class="cell reveal d3">
+        <div>
+          <div class="idx">04 · REFORM</div>
+          <div class="big">£6<span class="unit">B</span></div>
+        </div>
+        <div class="desc">Conditional deficit relief. Councils must now submit reform plans that demonstrate how outcomes for children will improve. Not efficiency. Outcomes.</div>
+        <div class="src">DfE February 2026 Announcement</div>
+      </div>
+    </div>
+
+    <div class="pullquote reveal">
+      "The UK spends more on SEND than almost any comparable system. The issue is that nobody knows whether the money translates into better lives for children."
+      <span class="attr">— The evidence gap Sensol exists to close</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT ========================================================== -->
+<section class="product" id="product">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="eyebrow reveal"><span class="dot"></span><span class="num">02</span>&nbsp;&nbsp;Product</div>
+        <h2 class="reveal" style="margin-top:18px;">Research, software, and agentic AI<br>designed around <em>one question.</em></h2>
+        <p class="reveal d1">Does the support in this child's plan actually improve their life? Everything we build exists to answer that - from intake, through drafting, to the outcomes dataset that has never existed.</p>
+      </div>
+      <div class="tags reveal d2">
+        <span>RAG architecture</span>
+        <span>Golden-thread validation</span>
+        <span>Outcomes tracking</span>
+        <span>Parent portal</span>
+        <span>Multi-agency orchestration</span>
+        <span>Children's Code compliant</span>
+      </div>
+    </div>
+
+    <div class="flow reveal">
+      <div class="step">
+        <div>
+          <div class="num">01 · INTAKE</div>
+          <h3>Professional reports <em>flow in</em></h3>
+          <p>EP assessments, medical reports, parental statements. Our AI extracts and structures the clinical findings automatically - no retyping, no lost context.</p>
+        </div>
+        <svg class="diagram" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5">
+          <rect x="10" y="14" width="40" height="52" rx="2"/>
+          <rect x="18" y="22" width="24" height="2"/><rect x="18" y="28" width="20" height="2"/><rect x="18" y="34" width="24" height="2"/>
+          <path d="M55 40 L100 40" stroke-dasharray="3 3"/>
+          <circle cx="110" cy="40" r="8" stroke-width="1.4"/>
+          <path d="M125 40 L170 40" stroke-dasharray="3 3"/>
+          <rect x="170" y="30" width="22" height="20" rx="2"/>
+        </svg>
+      </div>
+      <div class="step">
+        <div>
+          <div class="num">02 · DRAFT</div>
+          <h3>Personalised drafts, <em>not generic</em> outputs</h3>
+          <p>RAG architecture retrieves relevant case law and guidance at generation time. No child data touches the model. Every statement sourced and cited.</p>
+        </div>
+        <svg class="diagram" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5">
+          <g><circle cx="30" cy="40" r="5"/><circle cx="60" cy="22" r="4"/><circle cx="60" cy="58" r="4"/><circle cx="90" cy="40" r="5"/>
+          <line x1="30" y1="40" x2="60" y2="22"/><line x1="30" y1="40" x2="60" y2="58"/><line x1="60" y1="22" x2="90" y2="40"/><line x1="60" y1="58" x2="90" y2="40"/></g>
+          <path d="M105 40 L140 40" stroke-dasharray="3 3"/>
+          <rect x="142" y="18" width="50" height="44" rx="2"/>
+          <line x1="150" y1="28" x2="184" y2="28" stroke-opacity="0.7"/>
+          <line x1="150" y1="36" x2="178" y2="36" stroke-opacity="0.7"/>
+          <line x1="150" y1="44" x2="184" y2="44" stroke-opacity="0.7"/>
+          <line x1="150" y1="52" x2="172" y2="52" stroke-opacity="0.7"/>
+        </svg>
+      </div>
+      <div class="step">
+        <div>
+          <div class="num">03 · VALIDATE</div>
+          <h3>The golden thread, <em>validated</em></h3>
+          <p>Graph-based algorithms check that needs connect to outcomes connect to provision. Vague language gets flagged before it becomes a tribunal case.</p>
+        </div>
+        <svg class="diagram" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5">
+          <circle cx="26" cy="40" r="6"/>
+          <circle cx="78" cy="20" r="6"/>
+          <circle cx="78" cy="60" r="6"/>
+          <circle cx="130" cy="40" r="6"/>
+          <circle cx="180" cy="40" r="6"/>
+          <line x1="32" y1="40" x2="72" y2="22"/>
+          <line x1="32" y1="40" x2="72" y2="58"/>
+          <line x1="84" y1="22" x2="124" y2="40"/>
+          <line x1="84" y1="58" x2="124" y2="40"/>
+          <line x1="136" y1="40" x2="174" y2="40"/>
+          <path d="M84 22 L124 38" stroke="currentColor" stroke-width="1.6" stroke-opacity="0.9"/>
+        </svg>
+      </div>
+      <div class="step">
+        <div>
+          <div class="num">04 · LEARN</div>
+          <h3>Outcomes tracked <em>across years</em></h3>
+          <p>Annual reviews feed structured data back in. Over time the platform answers, for the first time, which provisions produce results and which do not.</p>
+        </div>
+        <svg class="diagram" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5">
+          <polyline points="10,60 40,52 70,55 100,38 130,42 160,22 190,18" stroke-width="1.6"/>
+          <g fill="currentColor" stroke="none" fill-opacity="0.8">
+            <circle cx="10" cy="60" r="2"/><circle cx="40" cy="52" r="2"/><circle cx="70" cy="55" r="2"/>
+            <circle cx="100" cy="38" r="2"/><circle cx="130" cy="42" r="2"/><circle cx="160" cy="22" r="2"/><circle cx="190" cy="18" r="2.5"/>
+          </g>
+          <line x1="10" y1="70" x2="190" y2="70" stroke-opacity="0.3"/>
+        </svg>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ THE CRISIS ═══ -->
-<section class="section-light" id="problem">
-  <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">The Numbers</p>
-      <h2>This is not a funding problem. It is an evidence problem.</h2>
-      <p>The UK spends more on SEND than almost any comparable system. The issue is that nobody knows whether the money translates into better lives for children.</p>
+<!-- WHY US =========================================================== -->
+<section class="whyus" id="whyus">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow reveal"><span class="dot"></span><span class="num">03</span>&nbsp;&nbsp;Why Sensol</div>
+      <h2 class="reveal" style="margin-top:18px;">Three things <em>no existing</em><br>SEND tool does.</h2>
+      <p class="reveal d1">
+</p>
     </div>
-    <div class="crisis-grid">
-      <div class="crisis-card reveal reveal-delay-1">
-        <div class="crisis-number red">£10.54B</div>
-        <h4>Spent with no feedback loop</h4>
-        <p>Annual high-needs spending across England. Not a single structured dataset connects this money to whether children's lives improve.</p>
-        <div class="crisis-source">DfE High Needs Block 2024/25</div>
-      </div>
-      <div class="crisis-card reveal reveal-delay-2">
-        <div class="crisis-number amber">53.6%</div>
-        <h4>Plans that arrive too late</h4>
-        <p>Over half of new EHCPs miss the statutory deadline. At the worst councils, the figure drops to 1%. Children wait months or years for support that should take 20 weeks.</p>
-        <div class="crisis-source">DfE SEN2 2025 Release</div>
-      </div>
-      <div class="crisis-card reveal reveal-delay-3">
-        <div class="crisis-number red">£153M</div>
-        <h4>Burned on fights councils keep losing</h4>
-        <p>22,276 tribunal cases in 2024. A 43% surge. Councils lost 99% of those that reached hearing. These are not close calls. They are plans that never should have been issued.</p>
-        <div class="crisis-source">HMCTS Tribunal Statistics 2024; IPSEA</div>
-      </div>
-      <div class="crisis-card reveal reveal-delay-1">
-        <div class="crisis-number blue">~£6B</div>
-        <h4>Conditional on proof of improvement</h4>
-        <p>The government is absorbing council SEND deficits. The condition: submit reform plans that demonstrate how outcomes for children will get better. Not efficiency. Outcomes.</p>
-        <div class="crisis-source">DfE February 2026 Announcement</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ═══ PRODUCT ═══ -->
-<section class="section-grey" id="product">
-  <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">What We Build</p>
-      <h2>Research, software, and agentic AI designed around one question</h2>
-      <p>Does the support in this child's plan actually improve their life? Everything we build exists to answer that.</p>
-    </div>
-    <div class="product-flow reveal">
-      <div class="product-visual">
-        <div class="flow-step">
-          <div class="flow-num">1</div>
-          <div><h4>Professional reports flow in</h4><p>EP assessments, medical reports, parental statements. Our AI extracts and structures the clinical findings automatically.</p></div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">2</div>
-          <div><h4>Personalised drafts, not generic outputs</h4><p>RAG architecture retrieves relevant case law and guidance at generation time. No child data touches the model. Every statement is sourced and cited.</p></div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">3</div>
-          <div><h4>The golden thread, validated</h4><p>Graph-based algorithms check that needs connect to outcomes connect to provision. Vague language gets flagged before it becomes a tribunal case.</p></div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">4</div>
-          <div><h4>Outcomes tracked across years</h4><p>Annual reviews feed structured data back into the system. Over time, the platform answers which provisions produce results and which do not.</p></div>
-        </div>
-      </div>
-      <div class="product-text">
-        <h3>We are not building a faster pen. We are building the feedback loop that never existed.</h3>
-        <p>The SEND industry has spent a decade digitising paperwork. Plans get drafted faster. Deadlines get tracked. But no one has built the infrastructure to measure whether the support prescribed in those plans actually changes a child's trajectory.</p>
-        <p>Sensol is an AI-native SEND company. We research provision effectiveness, build software that structures SEND data for the first time, and deploy agentic AI that coordinates the multi-agency process safely. The savings come not from cutting corners, but from finally knowing where £10 billion is well spent and where it is wasted.</p>
-        <div class="feature-tags">
-          <span class="feature-tag">RAG Architecture</span>
-          <span class="feature-tag">Golden Thread Validation</span>
-          <span class="feature-tag">Outcomes Tracking</span>
-          <span class="feature-tag">Parent Portal</span>
-          <span class="feature-tag">Multi-Agency Orchestration</span>
-          <span class="feature-tag">Children's Code Compliant</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ WHY SENSOL ═══ -->
-<section class="section-dark" id="difference">
-  <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">Where The Industry Stops, We Start</p>
-      <h2>Three things no existing SEND tool does</h2>
-      <p>Competitors validated that councils pay for EHCP automation. Good. We build what they left out.</p>
-    </div>
-    <div class="diff-grid">
-      <div class="diff-card reveal reveal-delay-1">
-        <div class="diff-icon blue">📊</div>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <svg class="glyph" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4">
+          <rect x="8" y="40" width="8" height="16"/>
+          <rect x="22" y="28" width="8" height="28"/>
+          <rect x="36" y="18" width="8" height="38"/>
+          <rect x="50" y="8" width="8" height="48"/>
+          <circle cx="12" cy="40" r="2" fill="currentColor"/>
+          <circle cx="26" cy="28" r="2" fill="currentColor"/>
+          <circle cx="40" cy="18" r="2" fill="currentColor"/>
+          <circle cx="54" cy="8" r="2" fill="currentColor"/>
+          <path d="M12 40 L26 28 L40 18 L54 8" stroke-dasharray="2 3"/>
+        </svg>
+        <div class="label">Dataset</div>
         <h3>The outcomes dataset that does not exist yet</h3>
-        <p>No platform in the UK links specific SEND provisions to whether children actually improve. We are building that dataset. The White Paper now requires councils to prove outcomes to access £6 billion in funding. This is not a feature. It is infrastructure they need by law.</p>
+        <p>No platform in the UK links specific SEND provisions to whether children actually improve. We are building that dataset. The White Paper now requires councils to prove outcomes to access £6 billion in funding. This is not a feature - it is infrastructure they need by law.</p>
+        <div class="stat">£6B<span class="cap">Funding conditional on outcomes evidence</span></div>
       </div>
-      <div class="diff-card reveal reveal-delay-2">
-        <div class="diff-icon teal">👨‍👩‍👧</div>
+
+      <div class="pillar reveal d1">
+        <svg class="glyph" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4">
+          <circle cx="20" cy="22" r="7"/>
+          <path d="M8 48 C 8 36, 32 36, 32 48"/>
+          <circle cx="46" cy="22" r="7"/>
+          <path d="M34 48 C 34 36, 58 36, 58 48"/>
+          <circle cx="33" cy="36" r="4" fill="currentColor" fill-opacity="0.2"/>
+          <line x1="24" y1="22" x2="42" y2="22" stroke-dasharray="2 2"/>
+        </svg>
+        <div class="label">Transparency</div>
         <h3>Families see what is happening for the first time</h3>
-        <p>Every existing tool faces the council only. Parents are locked out. Our portal gives families real-time visibility into plan progress, plain-English explanations, and provision status. The adversarial dynamic that drives £153 million in tribunal costs starts with information asymmetry. We end it.</p>
+        <p>Every existing tool faces the council only. Our portal gives families real-time visibility into plan progress, plain-English explanations, and provision status. The adversarial dynamic that drives £153M in tribunal costs starts with information asymmetry. </p>
+        <div class="stat">£153M<span class="cap">Annual tribunal costs born of opacity</span></div>
       </div>
-      <div class="diff-card reveal reveal-delay-3">
-        <div class="diff-icon amber">🔒</div>
+
+      <div class="pillar reveal d2">
+        <svg class="glyph" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M32 6 L54 16 V 32 C 54 44, 44 54, 32 58 C 20 54, 10 44, 10 32 V 16 Z"/>
+          <path d="M22 32 L28 38 L42 24" stroke-width="2"/>
+          <circle cx="32" cy="32" r="16" stroke-dasharray="2 3" stroke-opacity="0.4"/>
+        </svg>
+        <div class="label">Safety</div>
         <h3>AI safety built into the engineering, not the policy page</h3>
-        <p>We process children's disability data. That demands more than a privacy notice. Our middleware enforces the ICO Children's Code at the technical layer: purpose-coded data tagging, algorithmic transparency records for every AI output, and automated screening that prevents the AI from disadvantaging the child it serves.</p>
+        <p>We process children's disability data. Our middleware enforces the ICO Children's Code at the technical layer: purpose-coded data tagging, algorithmic transparency records for every AI output, and automated screening that prevents the AI from disadvantaging the child it serves.</p>
+        <div class="stat">0<span class="cap">Child records processed outside UK/EEA</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ TEAM ═══ -->
-<section class="section-light" id="team">
-  <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">Who We Are</p>
-      <h2>A lawyer, a SEND caseworker, and an engineer at Goldman Sachs walk into a problem</h2>
-      <p>This is not a punchline. It is the team composition this market actually requires.</p>
+<!-- TEAM ============================================================= -->
+<section class="team" id="team">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="eyebrow reveal"><span class="dot"></span><span class="num">04</span>&nbsp;&nbsp;Team</div>
+        <h2 class="reveal" style="margin-top:18px;">A small team built around <em>the problem</em>.</h2>
+      </div>
+      <p class="reveal d1">Policy literacy, frontline fluency, and the engineering chops to build production-grade AI for public services. </p>
     </div>
-    <div class="team-grid">
-      <div class="team-card reveal reveal-delay-1">
-        <div class="team-avatar yvonne">YN</div>
-        <h3>Yvonne Wambui Nyangi</h3>
-        <div class="team-role">Founder & CEO</div>
-        <p>LL.M International Economic Law (Queen Mary). Legal advisory at The Commonwealth. Compliance at Clifford Chance. Frontline carer for individuals with learning disabilities and complex needs. FDI Moot champion (All Africa).</p>
-      </div>
-      <div class="team-card reveal reveal-delay-2">
-        <div class="team-avatar caylem">CU</div>
-        <h3>Caylem Urssher</h3>
-        <div class="team-role">Co-Founder & COO</div>
-        <p>SEND domain specialist with frontline experience across three local authority SEND teams: Lambeth, Newham, and Sandwell. Assessment caseworker, annual review tracking, EHCP quality assurance. Knows every workflow from the inside.</p>
-      </div>
-      <div class="team-card reveal reveal-delay-3">
-        <div class="team-avatar daniel">DO</div>
-        <h3>Daniel Wole Olamide</h3>
-        <div class="team-role">CTO</div>
-        <p>Software Engineer, Core Engineering (Authentication) at Goldman Sachs. Built RAG-powered AI systems. Led replacement of 20-year-old authentication system across 800+ applications. BSc Informatics & Computer Science, Strathmore University.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ═══ BLOG ═══ -->
-<section class="section-grey" id="blog">
-  <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">Writing & Research</p>
-      <h2>What we are thinking about, investigating, and building</h2>
-      <p>Analysis of SEND policy, AI in public services, and the evidence gaps we exist to fill.</p>
-    </div>
-    <div class="blog-grid">
-      <div class="blog-card reveal reveal-delay-1">
-        <div class="blog-img blog-img-1"><div class="blog-overlay">📋</div></div>
-        <div class="blog-body">
-          <div class="blog-meta"><span class="blog-tag">SEND Policy</span><span class="blog-date">Coming Soon</span></div>
-          <h3>The White Paper rewrote the SEND market in one afternoon</h3>
-          <p>Every Child Achieving and Thriving introduces ISPs, retains EHCPs, and ties £6 billion in deficit relief to outcomes evidence. What this means for councils, schools, and companies like ours.</p>
-          <a href="#" class="blog-link">Read article →</a>
+    <div class="roster-list">
+      <div class="entry reveal">
+        <div class="entry-idx">01</div>
+        <div class="entry-name">
+          <div class="role">Founder &amp; CEO</div>
+          <div class="name">Yvonne Wambui Nyangi</div>
+        </div>
+        <div class="entry-bio">
+          <p>Legal advisory at The Commonwealth. Compliance at Clifford Chance. Frontline carer for individuals with learning disabilities and complex needs.</p>
+          <div class="creds"><span>LL.M International Economic Law</span><span>AI Governance &amp; Regulation</span></div>
         </div>
       </div>
-      <div class="blog-card reveal reveal-delay-2">
-        <div class="blog-img blog-img-2"><div class="blog-overlay">🔬</div></div>
-        <div class="blog-body">
-          <div class="blog-meta"><span class="blog-tag">Research</span><span class="blog-date">Coming Soon</span></div>
-          <h3>638,745 plans and no one asked if they worked</h3>
-          <p>Castro-Kemp et al. found most EHCP outcomes are not functional. Ahad's review found no systematic tracking of provision effectiveness. The gap is not accidental. It is structural.</p>
-          <a href="#" class="blog-link">Read article →</a>
+
+      <div class="entry reveal d1">
+        <div class="entry-idx">02</div>
+        <div class="entry-name">
+          <div class="role">Co-Founder &amp; COO</div>
+          <div class="name">Caylem Urssher</div>
+        </div>
+        <div class="entry-bio">
+          <p>SEND domain specialist with frontline experience across three local authority teams: Lambeth, Newham, and Sandwell. </p>
+          <div class="creds"><span>Assessment caseworker</span><span>EHCP quality assurance</span></div>
         </div>
       </div>
-      <div class="blog-card reveal reveal-delay-3">
-        <div class="blog-img blog-img-3"><div class="blog-overlay">⚖️</div></div>
-        <div class="blog-body">
-          <div class="blog-meta"><span class="blog-tag">AI & Ethics</span><span class="blog-date">Coming Soon</span></div>
-          <h3>What "safe AI" actually means when you process children's disability data</h3>
-          <p>Everyone claims privacy by design. We explain what that looks like at the engineering layer: purpose-coded tagging, transparency records, and detrimental use screening that runs on every output.</p>
-          <a href="#" class="blog-link">Read article →</a>
+
+      <div class="entry reveal d2">
+        <div class="entry-idx">03</div>
+        <div class="entry-name">
+          <div class="role">CTO</div>
+          <div class="name">Daniel Wole Olamide</div>
+        </div>
+        <div class="entry-bio">
+          <p>Software Engineer, Core Engineering (Authentication) at Goldman Sachs. Built RAG-powered AI systems and led the replacement of a 20-year-old authentication system across 800+ applications.</p>
+          <div class="creds"><span>BSc Informatics, Strathmore</span><span>Core Engineering, Goldman Sachs</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ CONTACT ═══ -->
-<section class="section-light" id="contact">
-  <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">Talk To Us</p>
-      <h2>We are looking for pilot councils, co-design partners, and investors who think the SEND system deserves better evidence</h2>
+<!-- RESEARCH ========================================================= -->
+<section class="research" id="research">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow reveal"><span class="dot"></span><span class="num">05</span>&nbsp;&nbsp;Research &amp; Writing</div>
+      <h2 class="reveal" style="margin-top:18px;">What we are thinking about,<br><em>investigating</em>, and building.</h2>
+      <p class="reveal d1">Working papers and briefings on SEND policy, AI in public services, and the evidence gaps we exist to fill. </p>
     </div>
-    <div class="contact-grid reveal">
-      <div class="contact-info">
-        <h3>Whether you work in a SEND team, run a school, care for a child with SEND, or invest in companies that solve hard problems.</h3>
-        <p>Sensol is pre-launch. We are in the research and build phase. If you have experience, opinions, or questions about what we are doing, we want to hear them.</p>
-        <div class="contact-detail">
-          <div class="contact-icon">✉</div>
-          <div><span style="display:block;font-size:0.75rem;color:var(--grey-400);margin-bottom:0.15rem;">Email</span><a href="mailto:info@sensolltd.co.uk">info@sensolltd.co.uk</a></div>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-icon">🏢</div>
-          <div><span style="display:block;font-size:0.75rem;color:var(--grey-400);margin-bottom:0.15rem;">Company</span><span>Sensol Limited · England & Wales</span></div>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-icon">🌐</div>
-          <div><span style="display:block;font-size:0.75rem;color:var(--grey-400);margin-bottom:0.15rem;">Website</span><a href="https://sensolltd.co.uk">sensolltd.co.uk</a></div>
+
+    <div class="papers">
+      <article class="paper reveal">
+        <div class="tag">Policy · Forthcoming</div>
+        <div class="meta">WP-01 · 2026</div>
+        <h3>The White Paper <em>rewrote</em> the SEND market in one afternoon</h3>
+        <p>"Every Child Achieving and Thriving" introduces ISPs, retains EHCPs, and ties £6B in deficit relief to outcomes evidence. What this means for councils, schools, and companies like ours.</p>
+        <div class="cta">Read the briefing <span class="arrow">→</span></div>
+      </article>
+
+      <article class="paper reveal d1">
+        <div class="tag">Research · Forthcoming</div>
+        <div class="meta">WP-02 · 2026</div>
+        <h3>638,745 plans and <em>no one asked</em> if they worked</h3>
+        <p>Castro-Kemp et al. found that most EHCP outcomes are not functional. Ahad's review found no systematic tracking of provision effectiveness. The gap is not accidental, it is structural.</p>
+        <div class="cta">Read the briefing <span class="arrow">→</span></div>
+      </article>
+
+      <article class="paper reveal d2">
+        <div class="tag">AI Ethics · Forthcoming</div>
+        <div class="meta">WP-03 · 2026</div>
+        <h3>What "safe AI" <em>actually means</em> when you process children's disability data</h3>
+        <p>Everyone claims privacy by design. We explain what that looks like at the engineering layer: purpose-coded tagging, transparency records, and detrimental-use screening on every output.</p>
+        <div class="cta">Read the briefing <span class="arrow">→</span></div>
+      </article>
+    </div>
+
+    <div class="annotation reveal">
+      <span>Working papers</span>
+      <div class="line"></div>
+      <span>Subscribe at info@sensolltd.co.uk</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT ========================================================== -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="lay">
+      <div class="left">
+        <div class="eyebrow reveal"><span class="dot"></span><span class="num">06</span>&nbsp;&nbsp;Talk To Us</div>
+        <h2 class="reveal" style="margin-top:18px;">We are looking for pilot councils, co-design partners, and <em>investors who think</em> the SEND system deserves better evidence.</h2>
+        <p class="lede reveal d1">Whether you work in a SEND team, run a school, care for a child with SEND, or invest in companies that solve hard problems - Sensol is pre-launch and we want to hear from you.</p>
+
+        <div class="info reveal d2">
+          <div class="row"><span class="k">Email</span><span class="v"><a href="mailto:info@sensolltd.co.uk">info@sensolltd.co.uk</a></span></div>
+          <div class="row"><span class="k">Entity</span><span class="v">Sensol Limited · England &amp; Wales</span></div>
+          <div class="row"><span class="k">Based</span><span class="v">London, United Kingdom</span></div>
+          <div class="row"><span class="k">Stage</span><span class="v">Pre-launch · Research &amp; build phase</span></div>
         </div>
       </div>
-      <form class="contact-form" action="https://formsubmit.co/info@sensolltd.co.uk" method="POST">
-        <input type="hidden" name="_subject" value="New enquiry from sensolltd.co.uk">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="text" name="_honey" style="display:none">
-        <input type="hidden" name="_next" value="https://sensolltd.co.uk/#contact">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" placeholder="Your name" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="you@organisation.co.uk" required>
-          </div>
+
+      <form class="reveal d2" onsubmit="event.preventDefault(); this.querySelector('.submit').textContent='Sent — we will be in touch';">
+        <div class="row">
+          <div class="field"><label for="fn">Full name</label><input id="fn" type="text" placeholder="Your name" required></div>
+          <div class="field"><label for="em">Email</label><input id="em" type="email" placeholder="you@organisation.gov.uk" required></div>
         </div>
-        <div class="form-group">
-          <label for="type">I am a...</label>
-          <select id="type" name="type" required>
-            <option value="" disabled selected>Select your role</option>
-            <option value="la">Local Authority SEND Professional</option>
-            <option value="school">School / SENCO</option>
-            <option value="parent">Parent / Carer</option>
-            <option value="investor">Investor</option>
-            <option value="partner">Potential Partner</option>
-            <option value="other">Other</option>
+        <div class="field">
+          <label for="role">I am a…</label>
+          <select id="role">
+            <option>Local authority SEND professional</option>
+            <option>School / SENCO</option>
+            <option>Parent or carer</option>
+            <option>Investor</option>
+            <option>Potential partner</option>
+            <option>Other</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Tell us about your interest in Sensol..." required></textarea>
-        </div>
-        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">Send Message →</button>
+        <div class="field"><label for="msg">Message</label><textarea id="msg" placeholder="What prompted you to get in touch?"></textarea></div>
+        <button class="btn primary submit" type="submit">Send message <span class="arrow">→</span></button>
       </form>
     </div>
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#" class="nav-logo" style="margin-bottom:0.5rem;">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-            <circle cx="20" cy="20" r="18" stroke="#3b82f6" stroke-width="2.5" fill="none"/>
-            <circle cx="20" cy="8" r="3" fill="#3b82f6"/><circle cx="20" cy="32" r="3" fill="#3b82f6"/>
-            <circle cx="8" cy="20" r="3" fill="#3b82f6"/><circle cx="32" cy="20" r="3" fill="#3b82f6"/>
-            <circle cx="20" cy="20" r="4" fill="#3b82f6"/>
+<!-- FOOTER =========================================================== -->
+<footer class="site">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="brand">
+          <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--paper);">
+            <circle cx="32" cy="32" r="28"/>
+            <path d="M32 12 L50 32 L32 52 L14 32 Z"/>
+            <line x1="32" y1="12" x2="32" y2="52"/><line x1="14" y1="32" x2="50" y2="32"/>
+            <line x1="20" y1="20" x2="44" y2="44"/><line x1="44" y1="20" x2="20" y2="44"/>
+            <g fill="currentColor"><circle cx="32" cy="12" r="2.2"/><circle cx="50" cy="32" r="2.2"/><circle cx="32" cy="52" r="2.2"/><circle cx="14" cy="32" r="2.2"/></g>
           </svg>
           <span>SENSOL</span>
-        </a>
-        <p>AI-native SEND research and software company. We explore, build, and deploy safe AI that creates the evidence base for what works in special educational needs provision.</p>
+        </div>
+        <p class="blurb">AI-native SEND research and software company. We explore, build, and deploy safe AI that creates the evidence base for what works in special educational needs provision.</p>
       </div>
-      <div class="footer-col">
+      <div>
         <h4>Platform</h4>
-        <a href="#product">How It Works</a>
-        <a href="#difference">Why Sensol</a>
-        <a href="#">For Local Authorities</a>
-        <a href="#">For Schools</a>
+        <ul>
+          <li><a href="#product">How it works</a></li>
+          <li><a href="#whyus">Why Sensol</a></li>
+          <li><a href="#">For local authorities</a></li>
+          <li><a href="#">For schools</a></li>
+        </ul>
       </div>
-      <div class="footer-col">
+      <div>
         <h4>Company</h4>
-        <a href="#team">Team</a>
-        <a href="#blog">Insights</a>
-        <a href="#">Careers</a>
-        <a href="#contact">Contact</a>
+        <ul>
+          <li><a href="#team">Team</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
       </div>
-      <div class="footer-col">
+      <div>
         <h4>Legal</h4>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Cookie Policy</a>
-        <a href="#">Terms of Use</a>
-        <a href="#">Accessibility</a>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Cookie policy</a></li>
+          <li><a href="#">Terms of use</a></li>
+          <li><a href="#">Accessibility</a></li>
+        </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 Sensol Limited. All rights reserved. Registered in England & Wales.</span>
+    <div class="bottom">
+      <span>© 2026 Sensol Limited · Registered in England &amp; Wales</span>
       <span>info@sensolltd.co.uk</span>
     </div>
   </div>
 </footer>
 
 <script>
-// Navbar scroll effect
-const navbar = document.getElementById('navbar');
+/* ------------- Nav scroll state + active link ----------------- */
+const nav = document.getElementById('nav');
+const links = document.querySelectorAll('nav.site ul a');
 window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 50);
-});
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
 
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
+const sections = ['crisis','product','whyus','team','research','contact'].map(id => document.getElementById(id));
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+}, { rootMargin: '-50% 0px -50% 0px' });
+sections.forEach(s => s && io.observe(s));
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+/* ------------- Reveal on scroll ----------------- */
+const rio = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => rio.observe(el));
 
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      document.getElementById('navLinks').classList.remove('open');
+/* ------------- Animated hero network (echoes logo node graph) ----------------- */
+(function () {
+  const canvas = document.getElementById('net');
+  const ctx = canvas.getContext('2d');
+  let W, H, DPR;
+  const nodes = [];
+  const NUM = 60;
+  let mouse = { x: -9999, y: -9999 };
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const r = canvas.parentElement.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+
+  function init() {
+    nodes.length = 0;
+    for (let i = 0; i < NUM; i++) {
+      nodes.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.22,
+        r: Math.random() * 1.6 + 0.8,
+        pulse: Math.random() * Math.PI * 2,
+      });
     }
-  });
-});
+  }
 
-// Counter animation for hero stats
-function animateCounters() {
-  const counters = document.querySelectorAll('.num-accent');
-  counters.forEach(counter => {
-    const text = counter.textContent;
-    if (text.includes(',')) {
-      const target = parseInt(text.replace(/,/g, ''));
-      let current = 0;
-      const increment = target / 60;
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          counter.textContent = target.toLocaleString();
-          clearInterval(timer);
-        } else {
-          counter.textContent = Math.floor(current).toLocaleString();
+  function step() {
+    ctx.clearRect(0, 0, W, H);
+    // soft paper vignette already via body bg; just draw nodes + links
+    const ink = '26, 47, 92'; // --ink-2 rgb
+    // links
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d2 = dx * dx + dy * dy;
+        const MAX = 170;
+        if (d2 < MAX * MAX) {
+          const alpha = (1 - Math.sqrt(d2) / MAX) * 0.22;
+          ctx.strokeStyle = `rgba(${ink}, ${alpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
         }
-      }, 25);
+      }
     }
-  });
-}
-setTimeout(animateCounters, 500);
+    // mouse-connected pulses
+    for (const a of nodes) {
+      const dx = a.x - mouse.x, dy = a.y - mouse.y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 220) {
+        const alpha = (1 - d / 220) * 0.55;
+        ctx.strokeStyle = `rgba(${ink}, ${alpha})`;
+        ctx.lineWidth = 0.9;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+      }
+    }
+    // nodes
+    for (const a of nodes) {
+      a.x += a.vx; a.y += a.vy; a.pulse += 0.02;
+      if (a.x < -20) a.x = W + 20; if (a.x > W + 20) a.x = -20;
+      if (a.y < -20) a.y = H + 20; if (a.y > H + 20) a.y = -20;
+      const pr = a.r + Math.sin(a.pulse) * 0.4;
+      ctx.fillStyle = `rgba(${ink}, 0.55)`;
+      ctx.beginPath(); ctx.arc(a.x, a.y, pr, 0, Math.PI * 2); ctx.fill();
+    }
+    requestAnimationFrame(step);
+  }
+
+  function onMove(e) {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  }
+  function onLeave() { mouse.x = mouse.y = -9999; }
+
+  window.addEventListener('resize', () => { resize(); init(); });
+  canvas.parentElement.addEventListener('mousemove', onMove);
+  canvas.parentElement.addEventListener('mouseleave', onLeave);
+  document.addEventListener('mousemove', onMove);
+
+  resize(); init(); step();
+})();
+
+/* ------------- Count-up ticker ----------------- */
+(function () {
+  const els = document.querySelectorAll('[data-count]');
+  const fmt = (n, target) => {
+    if (target >= 1000) return Math.round(n).toLocaleString('en-GB');
+    if (Number.isInteger(target)) return Math.round(n).toString();
+    return n.toFixed(1);
+  };
+  const animate = (el) => {
+    const target = parseFloat(el.getAttribute('data-count'));
+    const suffix = el.getAttribute('data-suffix') || '';
+    const dur = 1600;
+    const start = performance.now();
+    function tick(t) {
+      const p = Math.min(1, (t - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(target * eased, target) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  };
+  const cio = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { animate(e.target); cio.unobserve(e.target); } });
+  }, { threshold: 0.4 });
+  els.forEach(el => cio.observe(el));
+})();
 </script>
+
 </body>
-</html>4
+</html>
