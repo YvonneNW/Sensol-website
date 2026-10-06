@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sensol — Sign up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>
+body{min-height:100vh}
+.su{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);min-height:100vh}
+.su-l{position:relative;background:var(--ink);color:var(--paper);padding:36px 56px 48px;display:flex;flex-direction:column;overflow:hidden}
+.su-l .brand{color:var(--paper)}
+.su-l canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.9}
+.su-l > *{position:relative}
+.su-l .body{margin-top:auto;padding-top:80px}
+.su-l .eyebrow{color:rgba(244,241,234,.7)}
+.su-l h1{font-size:clamp(44px,4.6vw,72px);line-height:1;letter-spacing:-.025em;margin-bottom:22px}
+.su-l h1 em{color:rgba(244,241,234,.72);display:block}
+.su-l .lede{color:rgba(244,241,234,.84);font-size:18px}.su-l .eyebrow{margin-bottom:22px}
+.next{margin-top:40px;border-top:1px solid rgba(244,241,234,.2)}
+.next li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;padding:14px 0;border-bottom:1px solid rgba(244,241,234,.14);color:rgba(244,241,234,.86);font-size:15.5px}
+.next .n{font:500 12px/1.9 var(--mono);color:#f0b9a8}
+.su-r{padding:36px 64px 48px;display:flex;flex-direction:column}
+.su-top{display:flex;justify-content:flex-end}
+.back{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding:12px 0}
+.back:hover{text-decoration:underline;text-underline-offset:5px}
+.formw{margin:auto 0;max-width:560px;width:100%;padding-top:48px}
+.seg{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border:1px solid var(--line2);border-radius:999px;margin-bottom:36px}
+.seg button{flex:1 1 auto;min-height:44px;padding:0 16px;border-radius:999px;font:500 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);white-space:nowrap}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--ink);color:var(--paper)}
+.formw h2{font-size:clamp(30px,2.8vw,40px);line-height:1.08;margin-bottom:10px}
+.formw .sub{color:var(--ink3);margin-bottom:28px}
+.fld{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.fld label{font:500 14px/1.3 var(--sans)}
+.fld label span{font-weight:400;color:var(--soft)}
+.fld input,.fld select,.fld textarea{font:400 16px/1.4 var(--sans);color:var(--ink);background:var(--white);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;min-height:50px;width:100%}
+.fld textarea{min-height:92px;resize:vertical}
+.fld input:focus-visible,.fld select:focus-visible,.fld textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.inline{display:flex;gap:10px}
+.inline input{flex:1}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink3);margin:6px 0 18px}
+.check input{margin-top:4px;accent-color:var(--ink)}
+form .btn.full{width:100%}
+.fine{margin-top:14px}
+.pane{display:none}
+.pane.on{display:block;animation:fade .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.done{border:1px solid var(--line2);border-radius:14px;background:var(--card);padding:30px 32px}
+.done .ic{width:30px;height:30px;color:var(--accent)}
+.done h3{font-size:32px;margin:16px 0 8px}
+.done .ref{margin-top:18px;font:500 12px/1.6 var(--mono);letter-spacing:.06em;color:var(--soft);border-top:1px solid var(--line);padding-top:14px}
+.done .ref b{color:var(--ink);font-weight:500}
+@media (max-width:960px){
+ .su{grid-template-columns:minmax(0,1fr)}
+ .su-l{padding:24px 20px 36px;min-height:0}
+ .su-l .body{padding-top:36px}
+ .su-l h1{font-size:40px;margin-bottom:0}
+ .su-l .lede,.su-l .next{display:none}
+ .su-r{padding:20px 20px 48px}
+ .formw{padding-top:12px}
+ .row2{grid-template-columns:minmax(0,1fr);gap:0}
+ .inline{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="mark" viewBox="0 0 400 400"><g transform="translate(200,200)" fill="none" stroke="currentColor" stroke-width="12"><circle r="150"></circle><path d="M0 -100 L100 0 L0 100 L-100 0 Z"></path><line x1="0" y1="-100" x2="0" y2="100"></line><line x1="-100" y1="0" x2="100" y2="0"></line><line x1="-70" y1="-70" x2="70" y2="70"></line><line x1="70" y1="-70" x2="-70" y2="70"></line></g><g fill="currentColor"><circle cx="200" cy="100" r="17"></circle><circle cx="300" cy="200" r="17"></circle><circle cx="200" cy="300" r="17"></circle><circle cx="100" cy="200" r="17"></circle></g></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M7.5 12.5l3 3 6-6.5"></path></symbol>
+</defs></svg>
+
+<div class="su">
+<aside class="su-l">
+<canvas id="net" aria-hidden="true"></canvas>
+<a class="brand" href="index.html"><svg><use href="#mark"></use></svg><span>SENSOL</span></a>
+<div class="body">
+<div class="eyebrow"><span class="dot" style="background:#f0b9a8"></span><span id="lEy">Early access</span></div>
+<h1 id="lH">Be first to see <em>the platform.</em></h1>
+<p class="lede" id="lP">Join the waitlist for early access, and a short weekly note on what we are building for SEND teams.</p>
+<ul class="next" id="lN"></ul>
+</div>
+</aside>
+
+<main class="su-r">
+<div class="su-top"><a class="back" href="index.html">← Back to sensol</a></div>
+<div class="formw">
+<div class="seg" role="tablist" aria-label="What are you signing up for?">
+<button role="tab" data-i="waitlist">Join the waitlist</button>
+<button role="tab" data-i="pilot">Discuss a pilot</button>
+<button role="tab" data-i="partner">Partnership</button>
+</div>
+
+<section class="pane" data-p="waitlist">
+<h2>Join the waitlist.</h2>
+<p class="sub">One email a week at most. Unsubscribe whenever you like.</p>
+<form data-kind="waitlist">
+<div class="fld"><label for="w1">Email</label><div class="inline"><input id="w1" type="email" placeholder="you@organisation.gov.uk" required><button class="btn p" type="submit">Join <span class="ar">→</span></button></div></div>
+<div class="fld"><label for="w2">I work in <span>(optional)</span></label><select id="w2"><option value="">Choose one</option><option>Local authority SEND team</option><option>School or SENCO</option><option>Health or therapy service</option><option>Parent or carer</option><option>Research or investment</option><option>Other</option></select></div>
+<p class="small fine">We use your email only to send early access news. Privacy notice.</p>
+</form>
+</section>
+
+<section class="pane" data-p="pilot">
+<h2>Request a pilot conversation.</h2>
+<p class="sub">For local authority SEND teams. We start with your process, then configure Sensol around it.</p>
+<form data-kind="pilot">
+<div class="row2"><div class="fld"><label for="p1">Full name</label><input id="p1" required></div><div class="fld"><label for="p2">Work email</label><input id="p2" type="email" required></div></div>
+<div class="row2"><div class="fld"><label for="p3">Council</label><input id="p3" required></div><div class="fld"><label for="p4">Your role</label><select id="p4"><option>Head of SEND or service lead</option><option>SEND team manager</option><option>Caseworker or EHC coordinator</option><option>Other</option></select></div></div>
+<div class="fld"><label for="p5">Where does your process slow down most? <span>(optional)</span></label><textarea id="p5"></textarea></div>
+<label class="check"><input type="checkbox" checked> Also send me the weekly product note</label>
+<button class="btn p full" type="submit">Request a pilot conversation <span class="ar">→</span></button>
+<p class="small fine">We use your details only to reply to you. Privacy notice.</p>
+</form>
+</section>
+
+<section class="pane" data-p="partner">
+<h2>Explore a partnership.</h2>
+<p class="sub">For schools and SENCOs, health and therapy services, research partners and investors.</p>
+<form data-kind="partner">
+<div class="row2"><div class="fld"><label for="q1">Full name</label><input id="q1" required></div><div class="fld"><label for="q2">Email</label><input id="q2" type="email" required></div></div>
+<div class="row2"><div class="fld"><label for="q3">Organisation</label><input id="q3"></div><div class="fld"><label for="q4">I am interested as</label><select id="q4"><option>School or SENCO</option><option>Health or therapy service</option><option>Research partner</option><option>Investor</option><option>Other</option></select></div></div>
+<div class="fld"><label for="q5">Anything you would like us to know? <span>(optional)</span></label><textarea id="q5"></textarea></div>
+<label class="check"><input type="checkbox" checked> Also send me the weekly product note</label>
+<button class="btn p full" type="submit">Register interest <span class="ar">→</span></button>
+<p class="small fine">We use your details only to reply to you. Privacy notice.</p>
+</form>
+</section>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+const COPY={
+ waitlist:{ey:'Early access',h:'Be first to see <em>the platform.</em>',p:'Join the waitlist for early access, and a short weekly note on what we are building for SEND teams.',n:['Faster, individualised EHCP drafting from the child’s own evidence','Multi-agency coordination with agents that run the admin loop','Provision-linked outcomes tracking for every review'],done:['You’re on the list.','We will send early access news and a short weekly note. No more than one email a week.']},
+ pilot:{ey:'Council pilots',h:'Show us where your EHCP process <em>gets stuck.</em>',p:'A pilot is scoped with your team and set up with your templates, contacts and rules before anyone uses it.',n:['A 30-minute conversation about your caseload','A pilot scoped around your templates and escalation rules','Evaluation of plan quality as well as time saved'],done:['Thank you. We have your details.','We will be in touch shortly to arrange a 30-minute conversation with your team.']},
+ partner:{ey:'Partnerships',h:'Build coordinated SEND practice <em>with us.</em>',p:'We work with schools, health and therapy services, researchers and investors who want better evidence in SEND.',n:['Tell us about your organisation','We reply to arrange a conversation','We agree a way of working together'],done:['Thank you. We have your details.','We will reply shortly to arrange a conversation.']}
+};
+const segs=document.querySelectorAll('.seg button'),panes=document.querySelectorAll('.pane');
+const lEy=document.getElementById('lEy'),lH=document.getElementById('lH'),lP=document.getElementById('lP'),lN=document.getElementById('lN');
+function set(i){if(!COPY[i])i='waitlist';const c=COPY[i];segs.forEach(b=>{b.classList.toggle('on',b.dataset.i===i);b.setAttribute('aria-selected',b.dataset.i===i)});panes.forEach(p=>p.classList.toggle('on',p.dataset.p===i));
+ lEy.textContent=c.ey;lH.innerHTML=c.h;lP.textContent=c.p;lN.innerHTML=c.n.map((t,k)=>'<li><span class="n">0'+(k+1)+'</span>'+t+'</li>').join('');
+ const u=new URL(location.href);u.searchParams.set('intent',i);history.replaceState(null,'',u)}
+segs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.i)));
+document.querySelectorAll('form').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();const k=f.dataset.kind,d=COPY[k].done,ref='SNS-'+Math.random().toString(36).slice(2,7).toUpperCase();
+ f.parentElement.innerHTML='<div class="done"><svg class="ic"><use href="#i-check"></use></svg><h3>'+d[0]+'</h3><p class="sub" style="margin:0">'+d[1]+'</p><div class="ref">REFERENCE <b>'+ref+'</b> · '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+'</div><a class="btn g sm" style="margin-top:18px" href="index.html">Back to sensol</a></div>'}));
+set(new URLSearchParams(location.search).get('intent')||'waitlist');
+
+const cv=document.getElementById('net'),ctx=cv.getContext('2d'),RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let W,H,N=[];
+function size(){const d=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);N=Array.from({length:Math.round(Math.min(46,W*H/14000))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.16,vy:(Math.random()-.5)*.16}))}
+function draw(){ctx.clearRect(0,0,W,H);for(let i=0;i<N.length;i++){const a=N[i];for(let j=i+1;j<N.length;j++){const b=N[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<160){ctx.strokeStyle='rgba(244,241,234,'+((1-d/160)*.14)+')';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}}
+ for(const a of N){if(!RM){a.x+=a.vx;a.y+=a.vy}if(a.x<-10)a.x=W+10;if(a.x>W+10)a.x=-10;if(a.y<-10)a.y=H+10;if(a.y>H+10)a.y=-10;ctx.fillStyle='rgba(244,241,234,.35)';ctx.beginPath();ctx.arc(a.x,a.y,1.3,0,6.283);ctx.fill()}requestAnimationFrame(draw)}
+addEventListener('resize',size);size();draw();
+})();
+</script>
+</body>
+</html>

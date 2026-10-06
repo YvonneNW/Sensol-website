@@ -1,1007 +1,149 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sensol — AI-native research & software for SEND</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sensol | Connected SEND casework</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="icon" href="assets/sensol-logo.png">
-<template id="__bundler_thumbnail" data-bg-color="#f4f1ea">
-  <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-    <rect width="400" height="400" fill="#f4f1ea"/>
-    <g transform="translate(200,200)" fill="none" stroke="#15223f" stroke-width="6">
-      <circle r="140"/>
-      <path d="M0 -100 L100 0 L0 100 L-100 0 Z"/>
-      <line x1="0" y1="-100" x2="0" y2="100"/>
-      <line x1="-100" y1="0" x2="100" y2="0"/>
-      <line x1="-70" y1="-70" x2="70" y2="70"/>
-      <line x1="70" y1="-70" x2="-70" y2="70"/>
-    </g>
-    <g fill="#15223f">
-      <circle cx="200" cy="100" r="9"/>
-      <circle cx="300" cy="200" r="9"/>
-      <circle cx="200" cy="300" r="9"/>
-      <circle cx="100" cy="200" r="9"/>
-      <circle cx="130" cy="130" r="7"/>
-      <circle cx="270" cy="130" r="7"/>
-      <circle cx="270" cy="270" r="7"/>
-      <circle cx="130" cy="270" r="7"/>
-    </g>
-  </svg>
-</template>
-<style>
-/* Apple Garamond — not freely hosted. Fall back through EB Garamond.
-   If AppleGaramond is installed locally it will be picked up first. */
-@font-face {
-  font-family: 'Apple Garamond';
-  src: local('Apple Garamond'), local('AppleGaramond');
-  font-display: swap;
-}
-
-:root {
-  --ink: #15223f;
-  --ink-2: #1a2f5c;
-  --ink-3: #3a4a72;
-  --ink-soft: #6a7695;
-  --paper: #f4f1ea;
-  --paper-2: #ece7db;
-  --paper-3: #e2dcce;
-  --line: rgba(21,34,63,0.14);
-  --line-strong: rgba(21,34,63,0.28);
-  --accent: oklch(0.55 0.11 240);
-  --warn: oklch(0.58 0.13 30);
-  --serif: 'Apple Garamond', 'EB Garamond', 'Adobe Garamond Pro', Garamond, Georgia, serif;
-  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--serif);
-  background: var(--paper);
-  color: var(--ink);
-  font-size: 18px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-::selection { background: var(--ink); color: var(--paper); }
-
-a { color: inherit; text-decoration: none; }
-
-/* ---------- Grain / paper overlay ---------- */
-.grain {
-  position: fixed; inset: 0; pointer-events: none; z-index: 1;
-  opacity: 0.35; mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.13 0 0 0 0 0.25 0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
-/* ---------- Nav ---------- */
-nav.site {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 18px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  backdrop-filter: blur(14px);
-  background: rgba(244,241,234,0.72);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s ease, padding 0.3s ease;
-}
-nav.site.scrolled { border-bottom-color: var(--line); padding: 12px 40px; }
-nav.site .brand { display: flex; align-items: center; gap: 10px; font-family: var(--serif); letter-spacing: 0.18em; font-size: 15px; font-weight: 500; }
-nav.site .brand .mark { width: 26px; height: 26px; }
-nav.site ul { list-style: none; display: flex; gap: 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
-nav.site ul a { color: var(--ink-soft); transition: color 0.2s; position: relative; padding: 4px 0; }
-nav.site ul a:hover, nav.site ul a.active { color: var(--ink); }
-nav.site ul a.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--ink); }
-nav.site .cta {
-  font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 10px 18px; border: 1px solid var(--ink); border-radius: 999px; color: var(--ink);
-  transition: all 0.2s; background: transparent;
-}
-nav.site .cta:hover { background: var(--ink); color: var(--paper); }
-
-/* ---------- Generic section ---------- */
-section { position: relative; z-index: 2; padding: 140px 40px; }
-.wrap { max-width: 1280px; margin: 0 auto; }
-.eyebrow {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--ink-soft); display: inline-flex; align-items: center; gap: 10px;
-}
-.eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-.eyebrow .num { color: var(--ink); }
-
-h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.015em; text-wrap: balance; }
-h1 { font-size: clamp(48px, 7.2vw, 108px); line-height: 0.98; }
-h2 { font-size: clamp(36px, 5vw, 68px); line-height: 1.02; }
-h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; }
-
-/* ---------- HERO ---------- */
-.hero {
-  min-height: 100vh; padding-top: 120px; padding-bottom: 60px;
-  display: flex; flex-direction: column; justify-content: space-between;
-  position: relative; overflow: hidden;
-}
-.hero .canvas-wrap {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-}
-.hero .content { position: relative; z-index: 3; max-width: 1280px; margin: 0 auto; width: 100%; padding: 0 0; }
-.hero .meta-row {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--ink-soft);
-  padding-top: 40px;
-}
-.hero h1 { margin: 60px 0 40px; max-width: 14ch; }
-.hero h1 .it { font-style: italic; font-weight: 400; color: var(--ink-2); }
-.hero h1 .strike { position: relative; display: inline-block; }
-.hero h1 .strike::after {
-  content:''; position:absolute; left:-2%; right:-2%; top:55%; height:4px; background: var(--warn);
-  transform: scaleX(0); transform-origin: left; animation: strike 1.2s 1.5s cubic-bezier(.2,.8,.2,1) forwards;
-}
-@keyframes strike { to { transform: scaleX(1); } }
-
-.hero .lede {
-  max-width: 560px; font-size: 22px; color: var(--ink-3); line-height: 1.45;
-  margin-bottom: 44px;
-}
-.hero .actions { display: flex; gap: 14px; flex-wrap: wrap; }
-.btn {
-  font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 16px 26px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px;
-  border: 1px solid var(--ink); transition: all 0.25s cubic-bezier(.2,.8,.2,1); cursor: pointer;
-}
-.btn.primary { background: var(--ink); color: var(--paper); }
-.btn.primary:hover { background: var(--ink-2); transform: translateY(-1px); }
-.btn.ghost { color: var(--ink); }
-.btn.ghost:hover { background: var(--ink); color: var(--paper); }
-.btn .arrow { display: inline-block; transition: transform 0.25s; }
-.btn:hover .arrow { transform: translateX(3px); }
-
-.hero .ticker {
-  border-top: 1px solid var(--line);
-  margin-top: 80px;
-  padding-top: 20px;
-  display: flex; justify-content: space-between; gap: 60px;
-  font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
-  letter-spacing: 0.06em;
-}
-.hero .ticker .item { display: flex; flex-direction: column; gap: 6px; }
-.hero .ticker .k { color: var(--ink); font-size: 22px; font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; }
-
-/* scroll hint */
-.scroll-hint {
-  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft);
-  display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 4;
-}
-.scroll-hint .line { width: 1px; height: 40px; background: linear-gradient(var(--ink-soft), transparent); animation: drop 2s ease-in-out infinite; }
-@keyframes drop { 0%,100%{transform:scaleY(0.6); transform-origin:top;} 50%{transform:scaleY(1);} }
-
-/* ---------- CRISIS ---------- */
-.crisis { background: var(--ink); color: var(--paper); overflow: hidden; }
-.crisis .eyebrow { color: rgba(244,241,234,0.6); }
-.crisis .eyebrow .num { color: var(--paper); }
-.crisis h2 { margin: 18px 0 60px; max-width: 18ch; }
-.crisis h2 em { font-style: italic; color: rgba(244,241,234,0.7); font-weight: 400; }
-.crisis .grid {
-  display: grid; grid-template-columns: repeat(12, 1fr); gap: 1px;
-  background: rgba(244,241,234,0.14);
-  border: 1px solid rgba(244,241,234,0.14);
-}
-.crisis .cell {
-  background: var(--ink); padding: 40px;
-  grid-column: span 6; min-height: 320px; position: relative;
-  display: flex; flex-direction: column; justify-content: space-between;
-  transition: background 0.3s;
-}
-.crisis .cell:hover { background: #0e1a33; }
-.crisis .cell.wide { grid-column: span 6; }
-.crisis .cell .idx { font-family: var(--mono); font-size: 11px; color: rgba(244,241,234,0.4); letter-spacing: 0.14em; }
-.crisis .cell .big {
-  font-family: var(--serif); font-size: clamp(64px, 8vw, 120px);
-  line-height: 0.95; letter-spacing: -0.02em; font-weight: 400;
-  display: flex; align-items: baseline; gap: 4px;
-}
-.crisis .cell .big .unit { font-size: 0.45em; color: rgba(244,241,234,0.5); margin-left: 4px; }
-.crisis .cell .desc { font-size: 17px; color: rgba(244,241,234,0.75); max-width: 40ch; line-height: 1.45; }
-.crisis .cell .src { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(244,241,234,0.4); }
-
-.crisis .pullquote {
-  margin-top: 80px; font-family: var(--serif); font-style: italic; font-size: clamp(28px, 3.2vw, 44px);
-  line-height: 1.25; max-width: 26ch; color: rgba(244,241,234,0.85);
-  padding-left: 40px; border-left: 2px solid var(--warn);
-}
-.crisis .pullquote .attr { display: block; font-style: normal; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244,241,234,0.5); margin-top: 20px; }
-
-/* ---------- PRODUCT ---------- */
-.product { padding-top: 180px; padding-bottom: 180px; }
-.product .head { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; margin-bottom: 80px; }
-.product h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
-.product .head p { color: var(--ink-3); font-size: 20px; max-width: 46ch; margin-top: 20px; }
-.product .head .tags { display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; align-self: end; }
-.product .head .tags span { font-family: var(--mono); font-size: 11px; padding: 8px 14px; border: 1px solid var(--line-strong); border-radius: 999px; letter-spacing: 0.06em; color: var(--ink-3); }
-
-.flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.flow .step {
-  padding: 36px 28px; border-right: 1px solid var(--line); position: relative; min-height: 340px;
-  display: flex; flex-direction: column; justify-content: space-between;
-  transition: background 0.3s;
-}
-.flow .step:last-child { border-right: none; }
-.flow .step:hover { background: var(--paper-2); }
-.flow .step .num { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); letter-spacing: 0.14em; }
-.flow .step h3 { font-size: 24px; margin: 18px 0 12px; letter-spacing: -0.015em; }
-.flow .step h3 em { font-style: italic; color: var(--ink-3); font-weight: 400; }
-.flow .step p { font-size: 15px; color: var(--ink-3); line-height: 1.5; }
-.flow .step .diagram { height: 80px; margin-top: 20px; }
-
-.connector-layer {
-  position: absolute; inset: 0; pointer-events: none; z-index: 0;
-}
-
-/* ---------- WHY US ---------- */
-.whyus { background: var(--paper-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.whyus .head { max-width: 800px; margin-bottom: 80px; }
-.whyus .head h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
-.whyus .head p { margin-top: 20px; color: var(--ink-3); font-size: 20px; }
-.whyus .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.whyus .pillar {
-  background: var(--paper); border: 1px solid var(--line); padding: 36px 32px 44px;
-  display: flex; flex-direction: column; gap: 20px; min-height: 520px;
-  position: relative; overflow: hidden;
-  transition: transform 0.4s cubic-bezier(.2,.8,.2,1), border-color 0.3s;
-}
-.whyus .pillar:hover { transform: translateY(-4px); border-color: var(--ink); }
-.whyus .pillar .glyph { width: 64px; height: 64px; }
-.whyus .pillar h3 { font-size: 26px; letter-spacing: -0.015em; }
-.whyus .pillar p { color: var(--ink-3); font-size: 16px; }
-.whyus .pillar .label {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: -4px;
-}
-.whyus .pillar .stat { margin-top: auto; font-family: var(--serif); font-size: 40px; font-weight: 500; letter-spacing: -0.01em; }
-.whyus .pillar .stat .cap { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-soft); display: block; margin-top: 4px; }
-
-/* ---------- TEAM ---------- */
-.team { padding-top: 180px; }
-.team .head { display: grid; grid-template-columns: 1.15fr 1fr; gap: 60px; align-items: end; margin-bottom: 80px; }
-.team h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
-.team .head p { color: var(--ink-3); font-size: 20px; max-width: 46ch; }
-
-.roster-list { border-top: 1px solid var(--line-strong); }
-.roster-list .entry {
-  display: grid; grid-template-columns: 80px 1.1fr 1.6fr; gap: 40px;
-  padding: 44px 0; border-bottom: 1px solid var(--line);
-  align-items: start;
-  transition: background 0.3s, padding 0.3s;
-}
-.roster-list .entry:hover { background: var(--paper-2); padding-left: 16px; padding-right: 16px; }
-.roster-list .entry-idx { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; color: var(--ink-soft); padding-top: 10px; }
-.roster-list .entry-name .role { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px; }
-.roster-list .entry-name .name { font-family: var(--serif); font-size: clamp(28px, 3vw, 40px); line-height: 1.05; letter-spacing: -0.015em; color: var(--ink); }
-.roster-list .entry-bio p { font-size: 18px; color: var(--ink-3); line-height: 1.5; max-width: 52ch; }
-.roster-list .entry-bio .creds { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
-.roster-list .entry-bio .creds span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-soft); padding: 6px 12px; border: 1px solid var(--line-strong); border-radius: 999px; }
-
-@media (max-width: 960px) {
-  .roster-list .entry { grid-template-columns: 1fr; gap: 14px; padding: 32px 0; }
-  .roster-list .entry:hover { padding-left: 0; padding-right: 0; }
-}
-
-/* ---------- RESEARCH ---------- */
-.research { background: var(--ink); color: var(--paper); padding-top: 180px; padding-bottom: 180px; }
-.research .eyebrow { color: rgba(244,241,234,0.6); }
-.research .eyebrow .num { color: var(--paper); }
-.research .head { margin-bottom: 80px; max-width: 900px; }
-.research h2 em { font-style: italic; color: rgba(244,241,234,0.7); font-weight: 400; }
-.research .head p { margin-top: 20px; color: rgba(244,241,234,0.7); font-size: 20px; }
-.research .papers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(244,241,234,0.14); border: 1px solid rgba(244,241,234,0.14); }
-.research .paper {
-  background: var(--ink); padding: 36px; min-height: 460px;
-  display: flex; flex-direction: column; gap: 20px;
-  transition: background 0.3s; cursor: pointer;
-}
-.research .paper:hover { background: #0e1a33; }
-.research .paper .tag {
-  align-self: flex-start; font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-  color: rgba(244,241,234,0.7); padding: 6px 10px; border: 1px solid rgba(244,241,234,0.3);
-}
-.research .paper .meta { font-family: var(--mono); font-size: 11px; color: rgba(244,241,234,0.4); letter-spacing: 0.1em; }
-.research .paper h3 { font-size: 26px; line-height: 1.15; letter-spacing: -0.015em; }
-.research .paper h3 em { font-style: italic; color: rgba(244,241,234,0.6); font-weight: 400; }
-.research .paper p { color: rgba(244,241,234,0.6); font-size: 15px; }
-.research .paper .cta { margin-top: auto; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper); display: flex; align-items: center; gap: 8px; }
-.research .paper:hover .cta .arrow { transform: translateX(4px); }
-.research .paper .cta .arrow { transition: transform 0.2s; }
-
-.research .annotation {
-  margin-top: 60px; display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;
-  font-family: var(--mono); font-size: 11px; color: rgba(244,241,234,0.5); letter-spacing: 0.1em; text-transform: uppercase;
-}
-.research .annotation .line { height: 1px; background: rgba(244,241,234,0.2); }
-
-/* ---------- CONTACT ---------- */
-.contact { padding-top: 180px; padding-bottom: 120px; }
-.contact .lay { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: start; }
-.contact h2 { max-width: 18ch; }
-.contact h2 em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
-.contact .left p.lede { margin-top: 24px; color: var(--ink-3); font-size: 20px; max-width: 42ch; }
-.contact .left .info { margin-top: 50px; display: flex; flex-direction: column; gap: 24px; border-top: 1px solid var(--line); padding-top: 30px; }
-.contact .left .info .row { display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: baseline; font-family: var(--mono); font-size: 13px; }
-.contact .left .info .row .k { color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px; }
-.contact .left .info .row .v { color: var(--ink); }
-.contact .left .info .row .v a { border-bottom: 1px solid var(--line-strong); padding-bottom: 2px; }
-.contact .left .info .row .v a:hover { border-color: var(--ink); }
-
-form {
-  background: var(--paper-2); border: 1px solid var(--line);
-  padding: 40px; display: flex; flex-direction: column; gap: 20px;
-}
-form .field { display: flex; flex-direction: column; gap: 8px; }
-form label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
-form input, form select, form textarea {
-  font-family: var(--serif); font-size: 18px; padding: 12px 0;
-  background: transparent; border: none; border-bottom: 1px solid var(--line-strong);
-  color: var(--ink); outline: none; resize: vertical;
-  transition: border-color 0.2s;
-}
-form input:focus, form select:focus, form textarea:focus { border-bottom-color: var(--ink); }
-form textarea { min-height: 100px; }
-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-form .submit { align-self: flex-start; margin-top: 10px; }
-
-/* ---------- FOOTER ---------- */
-footer.site {
-  background: var(--ink); color: rgba(244,241,234,0.7); padding: 80px 40px 40px;
-  position: relative; z-index: 2;
-}
-footer.site .wrap { max-width: 1280px; margin: 0 auto; }
-footer.site .top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 60px; border-bottom: 1px solid rgba(244,241,234,0.14); }
-footer.site .brand { display: flex; align-items: center; gap: 12px; font-family: var(--serif); font-size: 28px; letter-spacing: 0.12em; color: var(--paper); }
-footer.site .brand .mark { width: 40px; height: 40px; }
-footer.site .blurb { margin-top: 20px; font-size: 15px; max-width: 40ch; line-height: 1.5; }
-footer.site h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper); margin-bottom: 16px; font-weight: 500; }
-footer.site ul { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; }
-footer.site ul a:hover { color: var(--paper); }
-footer.site .bottom {
-  padding-top: 30px; display: flex; justify-content: space-between; align-items: center;
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: rgba(244,241,234,0.5);
-}
-
-/* ---------- Logo mark svg sizing ---------- */
-.mark { display: block; }
-
-/* ---------- Reveal ---------- */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s cubic-bezier(.2,.8,.2,1), transform 0.9s cubic-bezier(.2,.8,.2,1); }
-.reveal.in { opacity: 1; transform: none; }
-.reveal.d1 { transition-delay: 0.08s; }
-.reveal.d2 { transition-delay: 0.16s; }
-.reveal.d3 { transition-delay: 0.24s; }
-.reveal.d4 { transition-delay: 0.32s; }
-.reveal.d5 { transition-delay: 0.4s; }
-
-/* responsive */
-@media (max-width: 960px) {
-  nav.site { padding: 14px 20px; }
-  nav.site ul { display: none; }
-  section { padding: 100px 20px; }
-  .hero .ticker { flex-wrap: wrap; gap: 20px; }
-  .crisis .cell { grid-column: span 12; }
-  .product .head, .team .head, .contact .lay { grid-template-columns: 1fr; }
-  .flow { grid-template-columns: 1fr; }
-  .flow .step { border-right: none; border-bottom: 1px solid var(--line); }
-  .whyus .pillars, .team .roster, .research .papers { grid-template-columns: 1fr; }
-  footer.site .top { grid-template-columns: 1fr 1fr; }
-}
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="mark" viewBox="0 0 400 400"><g transform="translate(200,200)" fill="none" stroke="currentColor" stroke-width="12"><circle r="150"></circle><path d="M0 -100 L100 0 L0 100 L-100 0 Z"></path><path d="M0 -100V100M-100 0H100M-70 -70L70 70M70 -70L-70 70"></path></g><g fill="currentColor"><circle cx="200" cy="100" r="17"></circle><circle cx="300" cy="200" r="17"></circle><circle cx="200" cy="300" r="17"></circle><circle cx="100" cy="200" r="17"></circle></g></symbol>
+</defs></svg>
 
-<div class="grain"></div>
+<header class="nav" id="nav">
+<div class="wrap nav-in">
+<a class="brand" href="#top" aria-label="Sensol home"><svg><use href="#mark"></use></svg><span>SENSOL</span></a>
+<nav class="links" aria-label="Main"><a href="#platform" data-sec="platform">Platform</a><a href="#your-team" data-sec="your-team">Who it’s for</a><a href="#trust" data-sec="trust">Trust &amp; data</a></nav>
+<div class="nav-cta"><a class="btn g sm" href="signup.html?intent=partner">Explore a Partnership</a><a class="btn p sm" href="signup.html?intent=pilot">Discuss a Pilot Council <span class="ar">→</span></a></div>
+<button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mnav">Menu</button>
+</div>
+<nav class="mnav" id="mnav" aria-label="Mobile"><a href="#platform">Platform</a><a href="#your-team">Who it’s for</a><a href="#trust">Trust &amp; data</a><a class="btn g" href="signup.html?intent=partner">Explore a Partnership</a><a class="btn p" href="signup.html?intent=pilot">Discuss a Pilot Council →</a></nav>
+</header>
 
-<nav class="site" id="nav">
-  <a class="brand" href="#top" aria-label="Sensol home">
-    <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.8">
-      <circle cx="32" cy="32" r="28"/>
-      <g stroke-width="2">
-        <path d="M32 12 L50 32 L32 52 L14 32 Z" fill="none"/>
-        <line x1="32" y1="12" x2="32" y2="52"/>
-        <line x1="14" y1="32" x2="50" y2="32"/>
-        <line x1="20" y1="20" x2="44" y2="44"/>
-        <line x1="44" y1="20" x2="20" y2="44"/>
-      </g>
-      <g fill="currentColor">
-        <circle cx="32" cy="12" r="2.6"/>
-        <circle cx="50" cy="32" r="2.6"/>
-        <circle cx="32" cy="52" r="2.6"/>
-        <circle cx="14" cy="32" r="2.6"/>
-        <circle cx="20" cy="20" r="2.2"/>
-        <circle cx="44" cy="20" r="2.2"/>
-        <circle cx="44" cy="44" r="2.2"/>
-        <circle cx="20" cy="44" r="2.2"/>
-        <circle cx="32" cy="32" r="2"/>
-      </g>
-    </svg>
-    <span>SENSOL</span>
-  </a>
-  <ul>
-    <li><a href="#crisis" data-link>The Crisis</a></li>
-    <li><a href="#product" data-link>Product</a></li>
-    <li><a href="#whyus" data-link>Why Us</a></li>
-    <li><a href="#team" data-link>Team</a></li>
-    <li><a href="#research" data-link>Research</a></li>
-    <li><a href="#contact" data-link>Contact</a></li>
-  </ul>
-  <a class="cta" href="#contact">Early Access →</a>
-</nav>
-
-<!-- HERO ============================================================ -->
+<main>
 <section class="hero" id="top">
-  <div class="canvas-wrap"><canvas id="net"></canvas></div>
-
-  <div class="content">
-    <div class="meta-row">
-      <span>SENSOL / LONDON · EST. 2026</span>
-      <span>AI-NATIVE · SEND · RESEARCH &amp; SOFTWARE</span>
-    </div>
-
-    <h1 class="reveal in">
-      £12 billion spent<br>
-      on SEND. <span class="it">Still no</span><br>
-      <span class="strike">evidence</span> of what<br>
-      actually works.
-    </h1>
-
-    <p class="lede reveal d2">
-      We are building the research, the platform, and the agentic AI to change that.
-      Safe by design. Evidence by default. Built for the 718,838 children
-      who deserve better than paperwork.
-    </p>
-
-    <div class="actions reveal d3">
-      <a class="btn primary" href="#contact">Request early access <span class="arrow">→</span></a>
-      <a class="btn ghost" href="#product">See how it works</a>
-    </div>
-
-    <div class="ticker reveal d4">
-      <div class="item"><span>Children with active EHCPs</span><span class="k" data-count="718838">718,838</span></div>
-      <div class="item"><span>Annual SEND spend</span><span class="k">£12B</span></div>
-      <div class="item"><span>Councils losing at tribunal</span><span class="k" data-count="99" data-suffix="%">99%</span></div>
-      <div class="item"><span>Plans arriving on time</span><span class="k" data-count="46.4" data-suffix="%">46.4%</span></div>
-    </div>
-  </div>
-
-  <div class="scroll-hint"><span>scroll</span><div class="line"></div></div>
+<canvas id="net" aria-hidden="true"></canvas>
+<div class="wrap">
+<div class="meta"><span class="eyebrow l">Sensol / Est. 2026</span><span class="eyebrow r"><span class="dot"></span>AI-native · Built for SEND</span></div>
+<h1>Connect the SEND process. <em>From assessment to <span class="u">outcomes.</span></em></h1>
+<p class="lede">Sensol is an AI-native platform built specifically for Special Educational Needs and Disabilities (SEND). It brings professional contributions, the child’s evidence, the plan and subsequent review into a connected working environment.</p>
+<div class="actions"><a class="btn p" href="signup.html?intent=pilot">Discuss a Pilot Council <span class="ar">→</span></a><a class="btn g" href="signup.html?intent=waitlist">Explore the platform <span class="ar">→</span></a></div>
+<div class="caps">
+<a class="cap" href="#platform"><span class="k">01</span><div><b>Draft</b><span>Individualised EHCP drafting</span></div></a>
+<a class="cap" href="#platform"><span class="k">02</span><div><b>Coordinate</b><span>Multi-agency casework</span></div></a>
+<a class="cap" href="#platform"><span class="k">03</span><div><b>Track</b><span>Provision-linked outcomes</span></div></a>
+</div>
+</div>
 </section>
 
-<!-- CRISIS =========================================================== -->
-<section class="crisis" id="crisis">
-  <div class="wrap">
-    <div class="eyebrow reveal"><span class="dot"></span><span class="num">01</span>&nbsp;&nbsp;The Crisis</div>
-    <h2 class="reveal">This is not a funding problem.<br><em>It is an evidence problem.</em></h2>
-
-    <div class="grid">
-      <div class="cell reveal">
-        <div>
-          <div class="idx">01 · SPEND</div>
-          <div class="big">£12<span class="unit">B</span></div>
-        </div>
-        <div class="desc">Annual high-needs spending across England, held flat for 2026–27 while plan numbers rose 12.5%. Not a single structured dataset connects this money to whether children's lives improve.</div>
-        <div class="src">DfE High Needs Funding 2026–27</div>
-      </div>
-      <div class="cell reveal d1">
-        <div>
-          <div class="idx">02 · DELAY</div>
-          <div class="big">53.6<span class="unit">%</span></div>
-        </div>
-        <div class="desc">Over half of new EHCPs miss the statutory 20-week deadline. At the worst councils, on-time issuance drops to 1%. Children wait months or years for support.</div>
-        <div class="src">DfE SEN2 January 2026 Census</div>
-      </div>
-      <div class="cell reveal d2">
-        <div>
-          <div class="idx">03 · LITIGATION</div>
-          <div class="big">£153<span class="unit">M</span></div>
-        </div>
-        <div class="desc">Around 25,000 SEND tribunal appeals in 2024/25, the highest number ever recorded and up from 3,100 a decade ago. Councils lost 99% of those that reached a hearing. These are not close calls - they are plans that never should have been issued.</div>
-        <div class="src">HMCTS / SENDIST Statistics 2024/25 · IPSEA</div>
-      </div>
-      <div class="cell reveal d3">
-        <div>
-          <div class="idx">04 · REFORM</div>
-          <div class="big">90<span class="unit">%</span></div>
-        </div>
-        <div class="desc">Of every council's high-needs deficit is now covered by the High Needs Stability Grant - but only if the DfE approves their local SEND reform plan. Commissioning packs went out in March 2026. Not efficiency. Outcomes.</div>
-        <div class="src">DfE High Needs Funding 2026–27 · GOV.UK</div>
-      </div>
-    </div>
-
-    <div class="pullquote reveal">
-      "The UK spends more on SEND than almost any comparable system. The issue is that nobody knows whether the money translates into better lives for children."
-      <span class="attr">— The evidence gap Sensol exists to close</span>
-    </div>
-  </div>
+<section class="stats" aria-label="SEND in numbers">
+<div class="wrap stats-g">
+<div class="stat rv"><div class="k"><span data-count="718838">718,838</span></div><p>Education, health and care plans in England in January 2026.</p><div class="src">Source: DfE, EHC plans 2026</div></div>
+<div class="stat rv d1"><div class="k"><span data-count="46.1">46.1</span>%</div><p>Of new EHCPs issued within the 20-week statutory timescale in 2025.</p><div class="src">Source: DfE, EHC plans 2026</div></div>
+<div class="stat rv d2"><div class="k">6 weeks</div><p>The time professionals generally have to respond to a request for advice.</p><div class="src">Source: SEND Regulations 2014, reg. 8</div></div>
+</div>
 </section>
 
-<!-- PRODUCT ========================================================== -->
-<section class="product" id="product">
-  <div class="wrap">
-    <div class="head">
-      <div>
-        <div class="eyebrow reveal"><span class="dot"></span><span class="num">02</span>&nbsp;&nbsp;Product</div>
-        <h2 class="reveal" style="margin-top:18px;">Research, software, and agentic AI<br>designed around <em>one question.</em></h2>
-        <p class="reveal d1">Does the support in this child's plan actually improve their life? Everything we build exists to answer that - from intake, through drafting, to the outcomes dataset that has never existed.</p>
-      </div>
-      <div class="tags reveal d2">
-        <span>RAG architecture</span>
-        <span>Golden-thread validation</span>
-        <span>Outcomes tracking</span>
-        <span>Parent portal</span>
-        <span>Multi-agency orchestration</span>
-        <span>Children's Code compliant</span>
-      </div>
-    </div>
-
-    <div class="flow reveal">
-      <div class="step">
-        <div>
-          <div class="num">01 · INTAKE</div>
-          <h3>Professional reports <em>flow in</em></h3>
-          <p>EP assessments, medical reports, parental statements. Our AI extracts and structures the clinical findings automatically - no retyping, no lost context.</p>
-        </div>
-        <svg class="diagram" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5">
-          <rect x="10" y="14" width="40" height="52" rx="2"/>
-          <rect x="18" y="22" width="24" height="2"/><rect x="18" y="28" width="20" height="2"/><rect x="18" y="34" width="24" height="2"/>
-          <path d="M55 40 L100 40" stroke-dasharray="3 3"/>
-          <circle cx="110" cy="40" r="8" stroke-width="1.4"/>
-          <path d="M125 40 L170 40" stroke-dasharray="3 3"/>
-          <rect x="170" y="30" width="22" height="20" rx="2"/>
-        </svg>
-      </div>
-      <div class="step">
-        <div>
-          <div class="num">02 · DRAFT</div>
-          <h3>Personalised drafts, <em>not generic</em> outputs</h3>
-          <p>RAG architecture retrieves relevant case law and guidance at generation time. No child data touches the model. Every statement sourced and cited.</p>
-        </div>
-        <svg class="diagram" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5">
-          <g><circle cx="30" cy="40" r="5"/><circle cx="60" cy="22" r="4"/><circle cx="60" cy="58" r="4"/><circle cx="90" cy="40" r="5"/>
-          <line x1="30" y1="40" x2="60" y2="22"/><line x1="30" y1="40" x2="60" y2="58"/><line x1="60" y1="22" x2="90" y2="40"/><line x1="60" y1="58" x2="90" y2="40"/></g>
-          <path d="M105 40 L140 40" stroke-dasharray="3 3"/>
-          <rect x="142" y="18" width="50" height="44" rx="2"/>
-          <line x1="150" y1="28" x2="184" y2="28" stroke-opacity="0.7"/>
-          <line x1="150" y1="36" x2="178" y2="36" stroke-opacity="0.7"/>
-          <line x1="150" y1="44" x2="184" y2="44" stroke-opacity="0.7"/>
-          <line x1="150" y1="52" x2="172" y2="52" stroke-opacity="0.7"/>
-        </svg>
-      </div>
-      <div class="step">
-        <div>
-          <div class="num">03 · VALIDATE</div>
-          <h3>The golden thread, <em>validated</em></h3>
-          <p>Graph-based algorithms check that needs connect to outcomes connect to provision. Vague language gets flagged before it becomes a tribunal case.</p>
-        </div>
-        <svg class="diagram" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5">
-          <circle cx="26" cy="40" r="6"/>
-          <circle cx="78" cy="20" r="6"/>
-          <circle cx="78" cy="60" r="6"/>
-          <circle cx="130" cy="40" r="6"/>
-          <circle cx="180" cy="40" r="6"/>
-          <line x1="32" y1="40" x2="72" y2="22"/>
-          <line x1="32" y1="40" x2="72" y2="58"/>
-          <line x1="84" y1="22" x2="124" y2="40"/>
-          <line x1="84" y1="58" x2="124" y2="40"/>
-          <line x1="136" y1="40" x2="174" y2="40"/>
-          <path d="M84 22 L124 38" stroke="currentColor" stroke-width="1.6" stroke-opacity="0.9"/>
-        </svg>
-      </div>
-      <div class="step">
-        <div>
-          <div class="num">04 · LEARN</div>
-          <h3>Outcomes tracked <em>across years</em></h3>
-          <p>Annual reviews feed structured data back in. Over time the platform answers, for the first time, which provisions produce results and which do not.</p>
-        </div>
-        <svg class="diagram" viewBox="0 0 200 80" fill="none" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5">
-          <polyline points="10,60 40,52 70,55 100,38 130,42 160,22 190,18" stroke-width="1.6"/>
-          <g fill="currentColor" stroke="none" fill-opacity="0.8">
-            <circle cx="10" cy="60" r="2"/><circle cx="40" cy="52" r="2"/><circle cx="70" cy="55" r="2"/>
-            <circle cx="100" cy="38" r="2"/><circle cx="130" cy="42" r="2"/><circle cx="160" cy="22" r="2"/><circle cx="190" cy="18" r="2.5"/>
-          </g>
-          <line x1="10" y1="70" x2="190" y2="70" stroke-opacity="0.3"/>
-        </svg>
-      </div>
-    </div>
-  </div>
+<section class="sec" id="platform">
+<div class="wrap">
+<div class="shead">
+<div><div class="eyebrow rv">01 / The platform</div><h2 class="rv">Connect the work. <br><em>Keep the child in view.</em></h2></div>
+<p class="rv d1">When advice, plans and reviews sit apart, the whole case is harder to see. Sensol connects the information and the work around it.</p>
+</div>
+<div class="capsg">
+<article class="capb rv"><div class="n">01 / DRAFT</div><h3>Individual evidence. <br>Individualised plans.</h3><p>Develop EHCP drafts from the child’s evidence, using SEND-specific language and source links for professionals to check, edit and approve.</p>
+<ul><li>Each sentence links to its report and page</li><li>Gaps in the evidence are flagged, not filled</li></ul></article>
+<article class="capb rv d1"><div class="n">02 / COORDINATE</div><h3>Shared casework. <br>Connected expertise.</h3><p>Bring professional contributions, advice requests and responsibilities together, with routine follow-ups carried through.</p>
+<ul><li>Every six-week advice period tracked</li><li>Unresolved requests escalated to your team</li></ul></article>
+<article class="capb rv d2"><div class="n">03 / TRACK</div><h3>Provision connected <br>to progress.</h3><p>Record support delivered and progress against outcomes, giving the next review a clearer evidence base.</p>
+<ul><li>Section F provision carried into the review</li><li>Progress recorded against Section E outcomes</li></ul></article>
+</div>
+<details class="routine rv">
+<summary>How Sensol handles routine administration<span class="pl" aria-hidden="true">+</span></summary>
+<div class="rbody">
+<div class="steps"><div class="st"><i>01</i><span>Request</span></div><div class="st"><i>02</i><span>Monitor</span></div><div class="st"><i>03</i><span>Follow up</span></div><div class="st"><i>04</i><span>Response detected</span></div><div class="st"><i>05</i><span>Case updated</span></div><div class="st esc"><i>06</i><span>Escalate</span></div></div>
+<p>Sensol prepares advice requests from approved templates, monitors due dates and follows up on your agreed schedule. When advice arrives, it attaches the response and updates the case. Requests that reach agreed limits are referred to your team with their history.</p>
+<p>Your team retains professional judgement and decision-making.</p>
+</div>
+</details>
+</div>
 </section>
 
-<!-- WHY US =========================================================== -->
-<section class="whyus" id="whyus">
-  <div class="wrap">
-    <div class="head">
-      <div class="eyebrow reveal"><span class="dot"></span><span class="num">03</span>&nbsp;&nbsp;Why Sensol</div>
-      <h2 class="reveal" style="margin-top:18px;">Three things <em>no existing</em><br>SEND tool does.</h2>
-      <p class="reveal d1">
-</p>
-    </div>
-
-    <div class="pillars">
-      <div class="pillar reveal">
-        <svg class="glyph" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4">
-          <rect x="8" y="40" width="8" height="16"/>
-          <rect x="22" y="28" width="8" height="28"/>
-          <rect x="36" y="18" width="8" height="38"/>
-          <rect x="50" y="8" width="8" height="48"/>
-          <circle cx="12" cy="40" r="2" fill="currentColor"/>
-          <circle cx="26" cy="28" r="2" fill="currentColor"/>
-          <circle cx="40" cy="18" r="2" fill="currentColor"/>
-          <circle cx="54" cy="8" r="2" fill="currentColor"/>
-          <path d="M12 40 L26 28 L40 18 L54 8" stroke-dasharray="2 3"/>
-        </svg>
-        <div class="label">Dataset</div>
-        <h3>The outcomes dataset that does not exist yet</h3>
-        <p>No platform in the UK links specific SEND provisions to whether children actually improve. We are building that dataset. Councils must now have a DfE-approved SEND reform plan to access deficit relief, and those plans have to evidence improved outcomes. This is not a feature - it is infrastructure they need by law.</p>
-        <div class="stat">90%<span class="cap">Of deficit relief conditional on an approved reform plan</span></div>
-      </div>
-
-      <div class="pillar reveal d1">
-        <svg class="glyph" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4">
-          <circle cx="20" cy="22" r="7"/>
-          <path d="M8 48 C 8 36, 32 36, 32 48"/>
-          <circle cx="46" cy="22" r="7"/>
-          <path d="M34 48 C 34 36, 58 36, 58 48"/>
-          <circle cx="33" cy="36" r="4" fill="currentColor" fill-opacity="0.2"/>
-          <line x1="24" y1="22" x2="42" y2="22" stroke-dasharray="2 2"/>
-        </svg>
-        <div class="label">Transparency</div>
-        <h3>Families see what is happening for the first time</h3>
-        <p>Every existing tool faces the council only. Our portal gives families real-time visibility into plan progress, plain-English explanations, and provision status. The adversarial dynamic that drives £153M in tribunal costs starts with information asymmetry. </p>
-        <div class="stat">£153M<span class="cap">Annual tribunal costs born of opacity</span></div>
-      </div>
-
-      <div class="pillar reveal d2">
-        <svg class="glyph" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4">
-          <path d="M32 6 L54 16 V 32 C 54 44, 44 54, 32 58 C 20 54, 10 44, 10 32 V 16 Z"/>
-          <path d="M22 32 L28 38 L42 24" stroke-width="2"/>
-          <circle cx="32" cy="32" r="16" stroke-dasharray="2 3" stroke-opacity="0.4"/>
-        </svg>
-        <div class="label">Safety</div>
-        <h3>AI safety built into the engineering, not the policy page</h3>
-        <p>We process children's disability data. Our middleware enforces the ICO Children's Code at the technical layer: purpose-coded data tagging, algorithmic transparency records for every AI output, and automated screening that prevents the AI from disadvantaging the child it serves. Our human-in-the-loop design matches the DfE's 2026 Generative AI Product Safety Standards: AI carries the process work, people keep every statutory judgement.</p>
-        <div class="stat">0<span class="cap">Child records processed outside UK/EEA</span></div>
-      </div>
-    </div>
-  </div>
+<section class="aud" id="your-team">
+<div class="wrap aud-l">
+<div class="aud-intro"><div class="eyebrow rv">02 / Your team</div><h2 class="rv">A shared record. <em>A clearer role for everyone.</em></h2><p class="rv d1">Connect the council’s view of the case with the contributions that shape it.</p></div>
+<div class="rv d1">
+<div class="tabs" role="tablist"><button class="on" role="tab" data-t="councils" aria-selected="true">Local authorities</button><button role="tab" data-t="schools" aria-selected="false">SENCOs &amp; schools</button></div>
+<div class="apanel on" data-p="councils"><h3>Capacity and oversight across your service.</h3><ul><li>Support caseworkers with drafting and routine administration.</li><li>See outstanding advice, responsibilities and case progress.</li><li>Keep provision and outcomes connected through review.</li></ul><a class="tlink" href="signup.html?intent=pilot">Discuss a council pilot</a></div>
+<div class="apanel" data-p="schools"><h3>A clear contribution to each case.</h3><ul><li>Understand what advice is needed and when.</li><li>Contribute school evidence to the shared case record.</li><li>Keep provision visible alongside recorded progress.</li></ul><a class="tlink" href="signup.html?intent=partner">Explore school involvement</a></div>
+</div>
+</div>
 </section>
 
-<!-- TEAM ============================================================= -->
-<section class="team" id="team">
-  <div class="wrap">
-    <div class="head">
-      <div>
-        <div class="eyebrow reveal"><span class="dot"></span><span class="num">04</span>&nbsp;&nbsp;Team</div>
-        <h2 class="reveal" style="margin-top:18px;">A small team built around <em>the problem</em>.</h2>
-      </div>
-      <p class="reveal d1">Policy literacy, frontline fluency, and the engineering chops to build production-grade AI for public services. </p>
-    </div>
-
-    <div class="roster-list">
-      <div class="entry reveal">
-        <div class="entry-idx">01</div>
-        <div class="entry-name">
-          <div class="role">Founder &amp; CEO</div>
-          <div class="name">Yvonne Wambui Nyangi</div>
-        </div>
-        <div class="entry-bio">
-          <p>Legal advisory at The Commonwealth. Compliance at Clifford Chance. Frontline carer for individuals with learning disabilities and complex needs.</p>
-          <div class="creds"><span>LL.M International Economic Law</span><span>AI Governance &amp; Regulation</span></div>
-        </div>
-      </div>
-
-      <div class="entry reveal d1">
-        <div class="entry-idx">02</div>
-        <div class="entry-name">
-          <div class="role">Co-Founder &amp; COO</div>
-          <div class="name">Caylem Urssher</div>
-        </div>
-        <div class="entry-bio">
-          <p>SEND domain specialist with frontline experience across three local authority teams: Lambeth, Newham, and Sandwell. </p>
-          <div class="creds"><span>Assessment caseworker</span><span>EHCP quality assurance</span></div>
-        </div>
-      </div>
-
-      <div class="entry reveal d2">
-        <div class="entry-idx">03</div>
-        <div class="entry-name">
-          <div class="role">Technical Advisor</div>
-          <div class="name">YankhoMpokosa</div>
-        </div>
-        <div class="entry-bio">
-          <p>AI specialist and entrepreneur.  Advises on Sensol's agentic architecture and privacy-first data stack.</p>
-          <div class="creds"><span>AI Systems &amp; Architecture</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
+<section class="trust" id="trust">
+<div class="wrap">
+<div class="trust-l">
+<div><div class="eyebrow rv">03 / Trust &amp; data</div><h2 class="rv">Children’s information, <br><em>handled with care.</em></h2></div>
+<div class="titems">
+<article class="rv"><h4>No training on child data.</h4><p>Children’s information is not used to train AI models.</p></article>
+<article class="rv d1"><h4>Professional oversight.</h4><p>Your team reviews drafted content and makes decisions.</p></article>
+<article class="rv"><h4>Traceable to evidence.</h4><p>Source links support checking the information behind a draft.</p></article>
+<article class="rv d1"><h4>GDPR compliant.</h4><p>Discuss your data protection requirements with our team.</p></article>
+</div>
+</div>
+<p class="tfoot">Evaluating Sensol for your organisation? <a href="mailto:info@sensolltd.co.uk?subject=Sensol%20data%20protection%20enquiry">Talk to us about data protection and assurance.</a></p>
+</div>
 </section>
 
-<!-- RESEARCH ========================================================= -->
-<section class="research" id="research">
-  <div class="wrap">
-    <div class="head">
-      <div class="eyebrow reveal"><span class="dot"></span><span class="num">05</span>&nbsp;&nbsp;Research &amp; Writing</div>
-      <h2 class="reveal" style="margin-top:18px;">What we are thinking about,<br><em>investigating</em>, and building.</h2>
-      <p class="reveal d1">Working papers and briefings on SEND policy, AI in public services, and the evidence gaps we exist to fill. </p>
-    </div>
-
-    <div class="papers">
-      <article class="paper reveal">
-        <div class="tag">Policy · Forthcoming</div>
-        <div class="meta">WP-01 · 2026</div>
-        <h3>The White Paper <em>rewrote</em> the SEND market in one afternoon</h3>
-        <p>"Every Child Achieving and Thriving" introduces ISPs, retains EHCPs, and ties £6B in deficit relief to outcomes evidence. What this means for councils, schools, and companies like ours.</p>
-        <div class="cta">Read the briefing <span class="arrow">→</span></div>
-      </article>
-
-      <article class="paper reveal d1">
-        <div class="tag">Research · Forthcoming</div>
-        <div class="meta">WP-02 · 2026</div>
-        <h3>718,838 plans and <em>no one asked</em> if they worked</h3>
-        <p>Castro-Kemp et al. found that most EHCP outcomes are not functional. Ahad's review found no systematic tracking of provision effectiveness. The gap is not accidental, it is structural.</p>
-        <div class="cta">Read the briefing <span class="arrow">→</span></div>
-      </article>
-
-      <article class="paper reveal d2">
-        <div class="tag">AI Ethics · Forthcoming</div>
-        <div class="meta">WP-03 · 2026</div>
-        <h3>What "safe AI" <em>actually means</em> when you process children's disability data</h3>
-        <p>Everyone claims privacy by design. We explain what that looks like at the engineering layer: purpose-coded tagging, transparency records, and detrimental-use screening on every output.</p>
-        <div class="cta">Read the briefing <span class="arrow">→</span></div>
-      </article>
-    </div>
-
-    <div class="annotation reveal">
-      <span>Working papers</span>
-      <div class="line"></div>
-      <span>Subscribe at info@sensolltd.co.uk</span>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT ========================================================== -->
 <section class="contact" id="contact">
-  <div class="wrap">
-    <div class="lay">
-      <div class="left">
-        <div class="eyebrow reveal"><span class="dot"></span><span class="num">06</span>&nbsp;&nbsp;Talk To Us</div>
-        <h2 class="reveal" style="margin-top:18px;">We are looking for pilot councils, co-design partners, and <em>investors who think</em> the SEND system deserves better evidence.</h2>
-        <p class="lede reveal d1">Whether you work in a SEND team, run a school, care for a child with SEND, or invest in companies that solve hard problems - Sensol is pre-launch and we want to hear from you.</p>
-
-        <div class="info reveal d2">
-          <div class="row"><span class="k">Email</span><span class="v"><a href="mailto:info@sensolltd.co.uk">info@sensolltd.co.uk</a></span></div>
-          <div class="row"><span class="k">Entity</span><span class="v">Sensol Limited · England &amp; Wales</span></div>
-          <div class="row"><span class="k">Based</span><span class="v">London, United Kingdom</span></div>
-          <div class="row"><span class="k">Stage</span><span class="v">Working platform · Seeking pilot authorities</span></div>
-        </div>
-      </div>
-
-      <form class="reveal d2" onsubmit="event.preventDefault(); this.querySelector('.submit').textContent='Sent — we will be in touch';">
-        <div class="row">
-          <div class="field"><label for="fn">Full name</label><input id="fn" type="text" placeholder="Your name" required></div>
-          <div class="field"><label for="em">Email</label><input id="em" type="email" placeholder="you@organisation.gov.uk" required></div>
-        </div>
-        <div class="field">
-          <label for="role">I am a…</label>
-          <select id="role">
-            <option>Local authority SEND professional</option>
-            <option>School / SENCO</option>
-            <option>Parent or carer</option>
-            <option>Investor</option>
-            <option>Potential partner</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="field"><label for="msg">Message</label><textarea id="msg" placeholder="What prompted you to get in touch?"></textarea></div>
-        <button class="btn primary submit" type="submit">Send message <span class="arrow">→</span></button>
-      </form>
-    </div>
-  </div>
+<div class="wrap">
+<div class="cbox rv">
+<div><div class="eyebrow">Start with your priorities</div><h2>Build a pilot around <em>the work you need to improve.</em></h2><p>See Sensol in action. Then agree what to evaluate, from drafting effort and outstanding advice to the completeness of review records.</p></div>
+<a class="btn p" href="signup.html?intent=pilot">Discuss a council pilot <span class="ar">→</span></a>
+</div>
+<div class="csmall"><span>Schools and professional partners: <a href="signup.html?intent=partner">explore involvement</a></span><a href="mailto:info@sensolltd.co.uk">info@sensolltd.co.uk</a></div>
+</div>
 </section>
+</main>
 
-<!-- FOOTER =========================================================== -->
-<footer class="site">
-  <div class="wrap">
-    <div class="top">
-      <div>
-        <div class="brand">
-          <svg class="mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--paper);">
-            <circle cx="32" cy="32" r="28"/>
-            <path d="M32 12 L50 32 L32 52 L14 32 Z"/>
-            <line x1="32" y1="12" x2="32" y2="52"/><line x1="14" y1="32" x2="50" y2="32"/>
-            <line x1="20" y1="20" x2="44" y2="44"/><line x1="44" y1="20" x2="20" y2="44"/>
-            <g fill="currentColor"><circle cx="32" cy="12" r="2.2"/><circle cx="50" cy="32" r="2.2"/><circle cx="32" cy="52" r="2.2"/><circle cx="14" cy="32" r="2.2"/></g>
-          </svg>
-          <span>SENSOL</span>
-        </div>
-        <p class="blurb">AI-native SEND research and software company. We explore, build, and deploy safe AI that creates the evidence base for what works in special educational needs provision.</p>
-      </div>
-      <div>
-        <h4>Platform</h4>
-        <ul>
-          <li><a href="#product">How it works</a></li>
-          <li><a href="#whyus">Why Sensol</a></li>
-          <li><a href="#">For local authorities</a></li>
-          <li><a href="#">For schools</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#team">Team</a></li>
-          <li><a href="#research">Research</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Legal</h4>
-        <ul>
-          <li><a href="#">Privacy policy</a></li>
-          <li><a href="#">Cookie policy</a></li>
-          <li><a href="#">Terms of use</a></li>
-          <li><a href="#">Accessibility</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="bottom">
-      <span>© 2026 Sensol Limited · Registered in England &amp; Wales</span>
-      <span>info@sensolltd.co.uk</span>
-    </div>
-  </div>
+<footer class="foot">
+<div class="wrap">
+<div class="foot-m">
+<div><a class="brand" href="#top"><svg><use href="#mark"></use></svg><span>SENSOL</span></a><p>AI-native software. Built for SEND.</p></div>
+<nav class="flinks" aria-label="Footer"><a href="#platform">Platform</a><a href="#your-team">For councils</a><a href="#your-team">For SENCOs</a><a href="#trust">Trust &amp; data</a><a href="signup.html?intent=waitlist">Join the waitlist</a><a href="mailto:info@sensolltd.co.uk">Contact</a></nav>
+</div>
+<div class="foot-b"><span>© 2026 Sensol Limited. England &amp; Wales.</span><span>Individual evidence. Connected expertise. Informed review.</span></div>
+</div>
 </footer>
 
 <script>
-/* ------------- Nav scroll state + active link ----------------- */
-const nav = document.getElementById('nav');
-const links = document.querySelectorAll('nav.site ul a');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 20);
-}, { passive: true });
-
-const sections = ['crisis','product','whyus','team','research','contact'].map(id => document.getElementById(id));
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
-    }
-  });
-}, { rootMargin: '-50% 0px -50% 0px' });
-sections.forEach(s => s && io.observe(s));
-
-/* ------------- Reveal on scroll ----------------- */
-const rio = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => rio.observe(el));
-
-/* ------------- Animated hero network (echoes logo node graph) ----------------- */
-(function () {
-  const canvas = document.getElementById('net');
-  const ctx = canvas.getContext('2d');
-  let W, H, DPR;
-  const nodes = [];
-  const NUM = 60;
-  let mouse = { x: -9999, y: -9999 };
-
-  function resize() {
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
-    const r = canvas.parentElement.getBoundingClientRect();
-    W = r.width; H = r.height;
-    canvas.width = W * DPR; canvas.height = H * DPR;
-    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  }
-
-  function init() {
-    nodes.length = 0;
-    for (let i = 0; i < NUM; i++) {
-      nodes.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: (Math.random() - 0.5) * 0.22,
-        r: Math.random() * 1.6 + 0.8,
-        pulse: Math.random() * Math.PI * 2,
-      });
-    }
-  }
-
-  function step() {
-    ctx.clearRect(0, 0, W, H);
-    // soft paper vignette already via body bg; just draw nodes + links
-    const ink = '26, 47, 92'; // --ink-2 rgb
-    // links
-    for (let i = 0; i < nodes.length; i++) {
-      const a = nodes[i];
-      for (let j = i + 1; j < nodes.length; j++) {
-        const b = nodes[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const d2 = dx * dx + dy * dy;
-        const MAX = 170;
-        if (d2 < MAX * MAX) {
-          const alpha = (1 - Math.sqrt(d2) / MAX) * 0.22;
-          ctx.strokeStyle = `rgba(${ink}, ${alpha})`;
-          ctx.lineWidth = 0.6;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-        }
-      }
-    }
-    // mouse-connected pulses
-    for (const a of nodes) {
-      const dx = a.x - mouse.x, dy = a.y - mouse.y;
-      const d = Math.sqrt(dx * dx + dy * dy);
-      if (d < 220) {
-        const alpha = (1 - d / 220) * 0.55;
-        ctx.strokeStyle = `rgba(${ink}, ${alpha})`;
-        ctx.lineWidth = 0.9;
-        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-      }
-    }
-    // nodes
-    for (const a of nodes) {
-      a.x += a.vx; a.y += a.vy; a.pulse += 0.02;
-      if (a.x < -20) a.x = W + 20; if (a.x > W + 20) a.x = -20;
-      if (a.y < -20) a.y = H + 20; if (a.y > H + 20) a.y = -20;
-      const pr = a.r + Math.sin(a.pulse) * 0.4;
-      ctx.fillStyle = `rgba(${ink}, 0.55)`;
-      ctx.beginPath(); ctx.arc(a.x, a.y, pr, 0, Math.PI * 2); ctx.fill();
-    }
-    requestAnimationFrame(step);
-  }
-
-  function onMove(e) {
-    const r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left;
-    mouse.y = e.clientY - r.top;
-  }
-  function onLeave() { mouse.x = mouse.y = -9999; }
-
-  window.addEventListener('resize', () => { resize(); init(); });
-  canvas.parentElement.addEventListener('mousemove', onMove);
-  canvas.parentElement.addEventListener('mouseleave', onLeave);
-  document.addEventListener('mousemove', onMove);
-
-  resize(); init(); step();
-})();
-
-/* ------------- Count-up ticker ----------------- */
-(function () {
-  const els = document.querySelectorAll('[data-count]');
-  const fmt = (n, target) => {
-    if (target >= 1000) return Math.round(n).toLocaleString('en-GB');
-    if (Number.isInteger(target)) return Math.round(n).toString();
-    return n.toFixed(1);
-  };
-  const animate = (el) => {
-    const target = parseFloat(el.getAttribute('data-count'));
-    const suffix = el.getAttribute('data-suffix') || '';
-    const dur = 1600;
-    const start = performance.now();
-    function tick(t) {
-      const p = Math.min(1, (t - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = fmt(target * eased, target) + suffix;
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  };
-  const cio = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { animate(e.target); cio.unobserve(e.target); } });
-  }, { threshold: 0.4 });
-  els.forEach(el => cio.observe(el));
+(function(){
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const mb=document.getElementById('menuBtn'),mn=document.getElementById('mnav');
+mb.addEventListener('click',()=>{const o=mn.classList.toggle('open');mb.setAttribute('aria-expanded',o);mb.textContent=o?'Close':'Menu'});
+mn.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mn.classList.remove('open');mb.textContent='Menu'}));
+const rio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rio.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>rio.observe(el));
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;cio.unobserve(e.target);const el=e.target,tg=parseFloat(el.dataset.count),dec=(el.dataset.count.split('.')[1]||'').length,t0=performance.now();
+ const f=n=>{const p=RM?1:Math.min(1,(n-t0)/1400),v=tg*(1-Math.pow(1-p,3));el.textContent=dec?v.toFixed(dec):Math.round(v).toLocaleString('en-GB');if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tabs button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-selected',x===b)});document.querySelectorAll('.apanel').forEach(p=>p.classList.toggle('on',p.dataset.p===b.dataset.t))}));
+const secs=[...document.querySelectorAll('main section[id]')],links=document.querySelectorAll('.links a');
+addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)c=s.id});links.forEach(a=>a.classList.toggle('on',a.dataset.sec===c))},{passive:true});
+const cv=document.getElementById('net'),ctx=cv.getContext('2d'),hero=document.getElementById('top');let W,H,N=[],mx=-1e4,my=-1e4,run=true;
+function size(){const d=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);N=Array.from({length:Math.round(Math.min(64,W*H/17000))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.16,vy:(Math.random()-.5)*.16,r:Math.random()*1.3+.8}))}
+function draw(){if(run){ctx.clearRect(0,0,W,H);for(let i=0;i<N.length;i++){const a=N[i];for(let j=i+1;j<N.length;j++){const b=N[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<180){ctx.strokeStyle='rgba(21,34,63,'+((1-d/180)*.14)+')';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}
+ const dm=Math.hypot(a.x-mx,a.y-my);if(dm<190){ctx.strokeStyle='rgba(45,106,154,'+((1-dm/190)*.4)+')';ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(mx,my);ctx.stroke()}}
+ for(const a of N){if(!RM){a.x+=a.vx;a.y+=a.vy}if(a.x<-20)a.x=W+20;if(a.x>W+20)a.x=-20;if(a.y<-20)a.y=H+20;if(a.y>H+20)a.y=-20;ctx.fillStyle='rgba(21,34,63,.38)';ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,6.283);ctx.fill()}}requestAnimationFrame(draw)}
+hero.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
+hero.addEventListener('mouseleave',()=>{mx=my=-1e4});
+new IntersectionObserver(es=>{run=es[0].isIntersecting}).observe(hero);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(size,150)});size();draw();
 })();
 </script>
-
 </body>
 </html>
